@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "Scripts\MonoGame.Core\MonoGame.Core.csproj", "{14C12700-8D7B-4C33-96EB-30873EDDE627}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Entities", "Scripts\MonoGame.Entities\MonoGame.Entities.csproj", "{5CF18D07-1D2D-4E67-A49C-777DC8EEA047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Scenes", "Scripts\MonoGame.Scenes\MonoGame.Scenes.csproj", "{60695B2C-F677-4469-AE3A-F7E1A04F61CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14C12700-8D7B-4C33-96EB-30873EDDE627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C12700-8D7B-4C33-96EB-30873EDDE627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C12700-8D7B-4C33-96EB-30873EDDE627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C12700-8D7B-4C33-96EB-30873EDDE627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF18D07-1D2D-4E67-A49C-777DC8EEA047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF18D07-1D2D-4E67-A49C-777DC8EEA047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF18D07-1D2D-4E67-A49C-777DC8EEA047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF18D07-1D2D-4E67-A49C-777DC8EEA047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60695B2C-F677-4469-AE3A-F7E1A04F61CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60695B2C-F677-4469-AE3A-F7E1A04F61CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60695B2C-F677-4469-AE3A-F7E1A04F61CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60695B2C-F677-4469-AE3A-F7E1A04F61CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
