@@ -13,6 +13,15 @@ public sealed class Score : IEntity
     public int PlayerPoints { get; set; }
     public int EnemyPoints { get; set; }
 
+    private string Text => $"{PlayerPoints} - {EnemyPoints}";
+    private Vector2 Size => _font.MeasureString(Text);
+    public Vector2 Position => new (_bounds.Width / 2f, 20f);
+    public Rectangle BoundingBox => new(
+        (int)(Position.X - Size.X / 2),
+        (int)(Position.Y - Size.Y / 2),
+        (int)Size.X,
+        (int)Size.Y / 2);
+
     public void LoadContent(Game game)
     {
         _font = game.Content.Load<SpriteFont>("Fonts/Font");
@@ -30,20 +39,15 @@ public sealed class Score : IEntity
 
     public void Draw()
     {
-        var position = new Vector2(
-            _bounds.Width / 2f,
-            20f);
-        var text = $"{PlayerPoints} - {EnemyPoints}";
-        var size = _font.MeasureString(text);
 
         _spriteBatch.Begin();
         _spriteBatch.DrawString(
             _font, 
-            text,
-            position,
+            Text,
+            Position,
             Color.White, 
             0f, 
-            size / 2, 
+            Size / 2, 
             Vector2.One,
             SpriteEffects.None, 
             0f);

@@ -57,13 +57,13 @@ public class GameRunner : Game
         _ball.Update(gameTime);
         _score.Update(gameTime);
 
-        if (_ball.BoundingBox.X + _ball.BoundingBox.Width >= GraphicsDevice.Viewport.Width - 80)
+        if (_ball.BoundingBox.X + _ball.BoundingBox.Width > GraphicsDevice.Viewport.Width - 80)
         {
             _score.PlayerPoints++;
             _ball.Reset();
         }
 
-        if (_ball.BoundingBox.X <= 80)
+        if (_ball.BoundingBox.X < 80)
         {
             _score.EnemyPoints++;
             _ball.Reset();

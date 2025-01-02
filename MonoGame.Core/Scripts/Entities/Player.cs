@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,13 +8,17 @@ namespace MonoGame.Core.Scripts.Entities;
 
 public sealed class Player : IEntity
 {
-    private const float MovementSpeed = 200f;
+    private const float MovementSpeed = 300f;
     
     private Texture2D _texture = null!;
     private SpriteBatch _spriteBatch = null!;
-    private Vector2 _position;
+    public  Vector2 Position { get; private set; }
     private Rectangle _bounds;
+    private bool _previouslyIntersectedBall;
     public Ball Ball { get; set; }
+
+    public Rectangle BoundingBox => new((int)(Position.X - _texture.Width / 2f), 
+        (int)(Position.Y - _texture.Height / 2f), _texture.Width, _texture.Height);
     
     public void LoadContent(Game game)
     {
@@ -27,7 +29,7 @@ public sealed class Player : IEntity
         _spriteBatch = new SpriteBatch(game.GraphicsDevice);
         _texture = new Texture2D(game.GraphicsDevice, 20, 80);
         _texture.SetData(Enumerable.Repeat(Color.White, _texture.Width * _texture.Height).ToArray());
-        _position = new Vector2(80, game.GraphicsDevice.Viewport.Height / 2f);
+        Position = new Vector2(80, game.GraphicsDevice.Viewport.Height / 2f);
         _bounds = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
     }
     
@@ -40,28 +42,30 @@ public sealed class Player : IEntity
         if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) dir += Vector2.UnitY;
 
         if (dir != Vector2.Zero)
-            _position += dir.Normalised() * MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Position += dir.Normalised() * MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (_position.Y - _texture.Height / 2f <= 0)
-            _position = new Vector2(_position.X, _texture.Height / 2f);
-        else if (_position.Y + _texture.Height / 2f >= _bounds.Height)
-            _position = new Vector2(_position.X, _bounds.Height - _texture.Height / 2f);
+        if (Position.Y - _texture.Height / 2f <= 0)
+            Position = new Vector2(Position.X, _texture.Height / 2f);
+        else if (Position.Y + _texture.Height / 2f >= _bounds.Height)
+            Position = new Vector2(Position.X, _bounds.Height - _texture.Height / 2f);
 
-        if (Ball.BoundingBox.X <= _position.X + _texture.Width / 2f)
+        if (Ball.BoundingBox.Intersects(BoundingBox))
         {
-            if (Ball.Position.Y >= _position.Y - _texture.Height / 2f &&
-                Ball.Position.Y <= _position.Y + _texture.Height / 2f)
-            {
-                Ball.Reflect(normal: Vector2.UnitX);
-            }
+            if (!_previouslyIntersectedBall) Ball.GetHitBy(this, Vector2.UnitX);    
+            _previouslyIntersectedBall = true;
+        }
+        else
+        {
+            _previouslyIntersectedBall = false;
         }
     }
+
 
     public void Draw()
     {
         _spriteBatch.Begin();
         _spriteBatch.Draw(_texture,
-            _position, 
+            Position, 
             null,
             Color.White,
             0f,
