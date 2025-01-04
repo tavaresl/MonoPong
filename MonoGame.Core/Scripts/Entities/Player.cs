@@ -6,25 +6,21 @@ using MonoGame.Core.Utils.Extensions;
 
 namespace MonoGame.Core.Scripts.Entities;
 
-public sealed class Player : IEntity
+public sealed class Player : Entity
 {
     private const float MovementSpeed = 300f;
     
     private Texture2D _texture = null!;
     private SpriteBatch _spriteBatch = null!;
-    public  Vector2 Position { get; private set; }
+    
     private Rectangle _bounds;
     private bool _previouslyIntersectedBall;
-    public Ball Ball { get; set; }
+    public Ball Ball { get; init; }
 
-    public Rectangle BoundingBox => new((int)(Position.X - _texture.Width / 2f), 
+    public override Rectangle BoundingBox => new((int)(Position.X - _texture.Width / 2f), 
         (int)(Position.Y - _texture.Height / 2f), _texture.Width, _texture.Height);
-    
-    public void LoadContent(Game game)
-    {
-    }
 
-    public void Initialise(Game game)
+    public override void Initialise(Game game)
     {
         _spriteBatch = new SpriteBatch(game.GraphicsDevice);
         _texture = new Texture2D(game.GraphicsDevice, 20, 80);
@@ -33,7 +29,7 @@ public sealed class Player : IEntity
         _bounds = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
     }
     
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         var keyboardState = Keyboard.GetState();
         var dir = Vector2.Zero;
@@ -61,7 +57,7 @@ public sealed class Player : IEntity
     }
 
 
-    public void Draw()
+    public override void Draw()
     {
         _spriteBatch.Begin();
         _spriteBatch.Draw(_texture,
@@ -78,7 +74,7 @@ public sealed class Player : IEntity
         _spriteBatch.End();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _texture.Dispose();
         _spriteBatch.Dispose();

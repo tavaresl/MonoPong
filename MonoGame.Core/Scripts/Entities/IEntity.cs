@@ -5,11 +5,12 @@ namespace MonoGame.Core.Scripts.Entities;
 
 public interface IEntity : IDisposable
 {
+    bool Enabled { get; set; }
     Vector2 Position { get; }
     Rectangle BoundingBox { get; }
     
-    void LoadContent(Game game);
     void Initialise(Game game);
+    void LoadContent(Game game);
     void Update(GameTime gameTime);
     void Draw();
 }

@@ -1,14 +1,29 @@
-using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoGame.Core.Scripts.Entities;
+using MonoGame.Core.Scripts.Systems;
 
 namespace MonoGame.Core.Scripts.Scenes;
 
-public interface IScene : IDisposable
+public interface IScene : IEntity
 {
-    bool HasStarted { get; }
+    InitialisationState State { get; }
+    IList<IEntity> Entities { get; }
+    IList<ISystem> Systems { get; }
     
-    void Initialise(Game game);
-    void LoadContent(Game game);
-    void Start(Game game);
-    void SwitchTo(IScene scene);
+    void Start();
+    void Stop();
+    void Open(IScene scene);
+}
+
+public enum InitialisationState
+{
+    NotRunning,
+    Initialising,
+    Initialised,
+    Loading,
+    Ready,
+    Starting,
+    Started,
+    Stopping,
 }

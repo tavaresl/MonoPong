@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Core.Scripts.Entities;
 
-public sealed class Score : IEntity
+public sealed class Score : Entity
 {
     private Rectangle _bounds;
     private SpriteFont _font;
@@ -15,31 +15,30 @@ public sealed class Score : IEntity
 
     private string Text => $"{PlayerPoints} - {EnemyPoints}";
     private Vector2 Size => _font.MeasureString(Text);
-    public Vector2 Position => new (_bounds.Width / 2f, 20f);
-    public Rectangle BoundingBox => new(
+    public override Rectangle BoundingBox => new(
         (int)(Position.X - Size.X / 2),
         (int)(Position.Y - Size.Y / 2),
         (int)Size.X,
         (int)Size.Y / 2);
 
-    public void LoadContent(Game game)
+    public override void LoadContent(Game game)
     {
         _font = game.Content.Load<SpriteFont>("Fonts/Font");
     }
 
-    public void Initialise(Game game)
+    public override void Initialise(Game game)
     {
         _spriteBatch = new SpriteBatch(game.GraphicsDevice);
         _bounds = game.GraphicsDevice.Viewport.Bounds;
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        Position = new Vector2(_bounds.Width / 2f, 20f);
     }
 
-    public void Draw()
+    public override void Draw()
     {
-
         _spriteBatch.Begin();
         _spriteBatch.DrawString(
             _font, 
@@ -54,7 +53,7 @@ public sealed class Score : IEntity
         _spriteBatch.End();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _spriteBatch.Dispose();
     }
