@@ -9,10 +9,10 @@ namespace MonoGame.Core.Scripts.Scenes;
 
 public abstract class Scene(Game1 game) : Entity, IScene
 {
-    public Game1 Game { get; private set; } = game;
+    public Game1 Game { get; } = game;
     public InitialisationState State { get; private set; } = InitialisationState.NotRunning;
-    public IList<IEntity> Entities { get; protected set; } = [];
-    public IList<ISystem> Systems { get; protected set; } = [];
+    public IList<IEntity> Entities { get; } = [];
+    public IList<ISystem> Systems { get; } = [];
     public override Rectangle BoundingBox => new(0, 0, Game.GraphicsDevice.Viewport.Width,
         Game.GraphicsDevice.Viewport.Height);
     

@@ -20,7 +20,7 @@ public sealed class Ball : Entity
     public Vector2 Dir { get; private set; }
 
     public override Rectangle BoundingBox =>
-        new((int)(Position.X - _size.X / 2f), (int)(Position.Y - _size.Y / 2f), _size.X, _size.Y);
+        new((int)(Transform.Position.X - _size.X / 2f), (int)(Transform.Position.Y - _size.Y / 2f), _size.X, _size.Y);
     
     public override void LoadContent(Game game)
     {
@@ -36,24 +36,24 @@ public sealed class Ball : Entity
         _speed = 500;
         _initialPosition = new Vector2(game.GraphicsDevice.Viewport.Width / 2f, game.GraphicsDevice.Viewport.Height / 2f);
         Dir = new Vector2(-1, 1).Normalised();
-        Position = _initialPosition;
+        Transform.Position = _initialPosition;
     }
 
     public override void Update(GameTime gameTime)
     {
-        if (Position.X <= _bounds.X + _size.X / 2f)
+        if (Transform.Position.X <= _bounds.X + _size.X / 2f)
             Reflect(normal: Vector2.UnitX);
         
-        if (Position.X >= _bounds.Width - _size.X / 2f)
+        if (Transform.Position.X >= _bounds.Width - _size.X / 2f)
             Reflect(normal: -Vector2.UnitX);
 
-        if (Position.Y <= _bounds.Y + _size.Y / 2f)
+        if (Transform.Position.Y <= _bounds.Y + _size.Y / 2f)
             Reflect(normal: Vector2.UnitY);
 
-        if (Position.Y >= _bounds.Height - _size.Y / 2f)
+        if (Transform.Position.Y >= _bounds.Height - _size.Y / 2f)
             Reflect(normal: -Vector2.UnitY);
         
-        Position += Dir.Normalised() * _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        Transform.Position += Dir.Normalised() * _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
     public override void Draw()
@@ -61,7 +61,7 @@ public sealed class Ball : Entity
         _spriteBatch.Begin();
         _spriteBatch.Draw(
             _texture,
-            new Rectangle((int)Position.X, (int)Position.Y, _size.X, _size.Y),
+            new Rectangle((int)Transform.Position.X, (int)Transform.Position.Y, _size.X, _size.Y),
             new Rectangle(0, 0, _texture.Width, _texture.Height),
             Color.White,
             0f,
@@ -84,18 +84,19 @@ public sealed class Ball : Entity
 
     public void Reset()
     {
-        Position = _initialPosition;
+        Transform.Position = _initialPosition;
     }
 
     public void GetHitBy(IEntity entity, Vector2 normal)
     {
         var halfHeight = entity.BoundingBox.Height / 2f;
-        var yDist = Math.Abs(Position.Y - entity.Position.Y);
+        var yDist = Math.Abs(Transform.Position.Y - entity.Transform.Position.Y);
         var clampDist = Math.Clamp(yDist, 0f, halfHeight);
         var factor = clampDist / halfHeight;
         var angle = float.Lerp(0, QuarterPi, factor);
 
-        if (normal.X > 0 && Position.Y < entity.Position.Y || normal.X < 0 && Position.Y > entity.Position.Y)
+        if (normal.X > 0 && Transform.Position.Y < entity.Transform.Position.Y 
+            || normal.X < 0 && Transform.Position.Y > entity.Transform.Position.Y)
         {
             angle = -angle;
         }

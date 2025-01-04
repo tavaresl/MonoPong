@@ -16,8 +16,8 @@ public sealed class Score : Entity
     private string Text => $"{PlayerPoints} - {EnemyPoints}";
     private Vector2 Size => _font.MeasureString(Text);
     public override Rectangle BoundingBox => new(
-        (int)(Position.X - Size.X / 2),
-        (int)(Position.Y - Size.Y / 2),
+        (int)(Transform.Position.X - Size.X / 2),
+        (int)(Transform.Position.Y - Size.Y / 2),
         (int)Size.X,
         (int)Size.Y / 2);
 
@@ -34,7 +34,7 @@ public sealed class Score : Entity
 
     public override void Update(GameTime gameTime)
     {
-        Position = new Vector2(_bounds.Width / 2f, 20f);
+        Transform.Position = new Vector2(_bounds.Width / 2f, 20f);
     }
 
     public override void Draw()
@@ -43,11 +43,11 @@ public sealed class Score : Entity
         _spriteBatch.DrawString(
             _font, 
             Text,
-            Position,
+            Transform.Position,
             Color.White, 
-            0f, 
+            Transform.Rotation, 
             Size / 2, 
-            Vector2.One,
+            Transform.Scale,
             SpriteEffects.None, 
             0f);
         _spriteBatch.End();

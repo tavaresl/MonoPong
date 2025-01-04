@@ -17,16 +17,16 @@ public sealed class Player : Entity
     private bool _previouslyIntersectedBall;
     public Ball Ball { get; init; }
 
-    public override Rectangle BoundingBox => new((int)(Position.X - _texture.Width / 2f), 
-        (int)(Position.Y - _texture.Height / 2f), _texture.Width, _texture.Height);
+    public override Rectangle BoundingBox => new((int)(Transform.Position.X - _texture.Width / 2f), 
+        (int)(Transform.Position.Y - _texture.Height / 2f), _texture.Width, _texture.Height);
 
     public override void Initialise(Game game)
     {
         _spriteBatch = new SpriteBatch(game.GraphicsDevice);
         _texture = new Texture2D(game.GraphicsDevice, 20, 80);
         _texture.SetData(Enumerable.Repeat(Color.White, _texture.Width * _texture.Height).ToArray());
-        Position = new Vector2(80, game.GraphicsDevice.Viewport.Height / 2f);
         _bounds = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+        Transform.Position = new Vector2(80, game.GraphicsDevice.Viewport.Height / 2f);
     }
     
     public override void Update(GameTime gameTime)
@@ -38,12 +38,12 @@ public sealed class Player : Entity
         if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) dir += Vector2.UnitY;
 
         if (dir != Vector2.Zero)
-            Position += dir.Normalised() * MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Transform.Position += dir.Normalised() * MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (Position.Y - _texture.Height / 2f <= 0)
-            Position = new Vector2(Position.X, _texture.Height / 2f);
-        else if (Position.Y + _texture.Height / 2f >= _bounds.Height)
-            Position = new Vector2(Position.X, _bounds.Height - _texture.Height / 2f);
+        if (Transform.Position.Y - _texture.Height / 2f <= 0)
+            Transform.Position = new Vector2(Transform.Position.X, _texture.Height / 2f);
+        else if (Transform.Position.Y + _texture.Height / 2f >= _bounds.Height)
+            Transform.Position = new Vector2(Transform.Position.X, _bounds.Height - _texture.Height / 2f);
 
         if (Ball.BoundingBox.Intersects(BoundingBox))
         {
@@ -61,14 +61,14 @@ public sealed class Player : Entity
     {
         _spriteBatch.Begin();
         _spriteBatch.Draw(_texture,
-            Position, 
+            Transform.Position, 
             null,
             Color.White,
-            0f,
+            Transform.Rotation,
             new Vector2(
                 (float)_texture.Width / 2,
                 (float)_texture.Height / 2),
-            Vector2.One,
+            Transform.Scale,
             SpriteEffects.None,
             0f);
         _spriteBatch.End();
