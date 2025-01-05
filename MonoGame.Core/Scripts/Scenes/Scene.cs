@@ -16,7 +16,7 @@ public abstract class Scene(Game1 game) : Entity, IScene
     public override Rectangle BoundingBox => new(0, 0, Game.GraphicsDevice.Viewport.Width,
         Game.GraphicsDevice.Viewport.Height);
     
-    public override void Initialise(Game game)
+    public override void Initialise(Game1 game)
     {
         State = InitialisationState.Initialising;
         
@@ -28,7 +28,7 @@ public abstract class Scene(Game1 game) : Entity, IScene
         State = InitialisationState.Initialised;
     }
 
-    public override void LoadContent(Game game)
+    public override void LoadContent(Game1 game)
     {
         State = InitialisationState.Loading;
             
@@ -68,6 +68,11 @@ public abstract class Scene(Game1 game) : Entity, IScene
 
     public override void Update(GameTime gameTime)
     {
+        foreach (var system in Systems)
+        {
+            system.Run(gameTime);
+        }
+
         foreach (var entity in Entities)
         {
             entity.Update(gameTime);
@@ -91,7 +96,7 @@ public abstract class Scene(Game1 game) : Entity, IScene
 
     public override void Dispose()
     {
-        GC.SuppressFinalize(this);
         Parallel.ForEach(Entities, e => e.Dispose());
+        GC.SuppressFinalize(this);
     }
 }

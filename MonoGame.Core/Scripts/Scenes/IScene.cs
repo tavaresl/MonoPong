@@ -7,6 +7,7 @@ namespace MonoGame.Core.Scripts.Scenes;
 
 public interface IScene : IEntity
 {
+    Game1 Game { get; }
     InitialisationState State { get; }
     IList<IEntity> Entities { get; }
     IList<ISystem> Systems { get; }

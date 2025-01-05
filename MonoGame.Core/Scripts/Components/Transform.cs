@@ -3,7 +3,7 @@ using MonoGame.Core.Scripts.Entities;
 
 namespace MonoGame.Core.Scripts.Components;
 
-public record Transform
+public class Transform
 {
     public IEntity Entity { get; init; }
     public Vector2 Position { get; set; }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core.Scripts.Scenes;
 
@@ -8,6 +10,7 @@ public class Game1 : Game
 {
     public IScene ActiveScene { get; set; }
     public GraphicsSettings GraphicsSettings { get; private set; }
+    public Queue<Action> DrawActions { get; } = new ();
 
     public Game1()
     {
@@ -35,7 +38,7 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-
+        
         // TODO: Add your update logic here
         ActiveScene.Update(gameTime);
         base.Update(gameTime);
@@ -47,6 +50,13 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         ActiveScene.Draw();
+
+        foreach (var drawAction in DrawActions)
+        {
+            drawAction.Invoke();            
+        }
+        
+        DrawActions.Clear();
         base.Draw(gameTime);
     }
 }

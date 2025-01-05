@@ -19,7 +19,10 @@
         <None Update="Content\Fonts\Arial.ttf">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
-        <None Update="Content\Fonts\Font.spritefont">
+        <None Update="Content\Fonts\ArialRegular12.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular72.spritefont">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
     </ItemGroup>
