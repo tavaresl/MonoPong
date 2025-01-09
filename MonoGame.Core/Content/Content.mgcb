@@ -9,7 +9,7 @@
 /compress:False
 
 #-------------------------------- References --------------------------------#
-
+/reference:../../MonoGame.Data/bin/Release/net8.0/MonoGame.Data.dll
 
 #---------------------------------- Content ---------------------------------#
 

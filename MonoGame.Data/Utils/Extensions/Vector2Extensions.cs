@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Core.Utils.Extensions;
+namespace MonoGame.Data.Utils.Extensions;
 
 public static class Vector2Extensions
 {

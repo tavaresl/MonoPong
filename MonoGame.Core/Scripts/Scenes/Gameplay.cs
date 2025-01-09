@@ -1,47 +1,64 @@
 using Microsoft.Xna.Framework;
+using MonoGame.Core.Scripts.Components.Paddles;
 using MonoGame.Core.Scripts.Entities;
-using MonoGame.Core.Scripts.Systems;
+using MonoGame.Data;
+using MonoGame.Data.Collision;
+using MonoGame.Data.Components.Drawables.Textures.Shapes;
+using Score = MonoGame.Core.Scripts.Entities.Score;
 
 namespace MonoGame.Core.Scripts.Scenes;
 
-public class Gameplay(Game1 game1) : Scene(game1)
+public class Gameplay : Scene
 {
-    private Player _player;
-    private Enemy _enemy;
-    private Ball _ball;
-    private Score _score;
-
-    public override void Initialise(Game1 game)
+    public Gameplay()
     {
-        _ball = new Ball();
-        _player = new Player { Ball = _ball };
-        _enemy = new Enemy { Ball = _ball };
-        _score = new Score();
+        var ball = new Ball();
+        var player = new Player { Ball = ball };
+        var enemy = new Enemy { Ball = ball };
+        var score = new Score();
+        var line = new Entity { Transform = new Transform { Position = new Vector2(640, 0) }};
+        var paddleSize = new Vector2(24, 96);
         
-        Systems.Add(new DrawingSystem { Scene = this });
-        
-        Entities.Add(_ball);       
-        Entities.Add(_player);
-        Entities.Add(_enemy);
-        Entities.Add(_score);
-
-        base.Initialise(game);
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        if (_ball.BoundingBox.X + _ball.BoundingBox.Width > Game.GraphicsDevice.Viewport.Width - 80)
+        line.AddComponent(new DashedLineTexture
         {
-            _score.PlayerPoints++;
-            _ball.Reset();
-        }
-
-        if (_ball.BoundingBox.X < 80)
+            AnchorPoint = new Vector2(0.5f, 0f),
+            StrokeWidth = 4,
+            Length = 720
+        });
+        score.AddComponent(new Components.Score());
+        player.AddComponent(new RectangleTexture { Size = paddleSize, Color = Color.White, AnchorPoint = new Vector2(0.5f, 0.5f) });
+        player.AddComponent(new PaddleController { Ball = ball, Size = paddleSize, Handler = new PlayerControl()});
+        player.AddComponent(new AabbCollider
         {
-            _score.EnemyPoints++;
-            _ball.Reset();
-        }   
+            X = (int)(player.Transform.Position.X - paddleSize.X / 2),
+            Y = (int)(player.Transform.Position.X - paddleSize.X / 2),
+            Width = (int)paddleSize.X,
+            Height = (int)paddleSize.Y
+        });
+        enemy.AddComponent(new RectangleTexture { Size = paddleSize, Color = Color.White, AnchorPoint = new Vector2(0.5f, 0.5f) });
+        enemy.AddComponent(new PaddleController { Ball = ball, Size = paddleSize, Handler = new EnemyControl()});
+        enemy.AddComponent(new AabbCollider
+        {
+            X = (int)(player.Transform.Position.X - paddleSize.X / 2),
+            Y = (int)(player.Transform.Position.X - paddleSize.X / 2),
+            Width = (int)paddleSize.X,
+            Height = (int)paddleSize.Y
+        });
+        ball.AddComponent(new CircleTexture { Radius = ball.Radius, AnchorPoint = new Vector2(0.5f, 0.5f) });
+        ball.AddComponent(new CircleCollider{ Radius = ball.Radius });
         
-        base.Update(gameTime);
+        AddChild(line);
+        AddChild(ball);
+        AddChild(player);
+        AddChild(enemy);
+        AddChild(score);
+        
+        AddComponent(new Components.Gameplay
+        {
+            Ball = ball,
+            Player = player,
+            Enemy = enemy,
+            Score = score
+        });
     }
 }

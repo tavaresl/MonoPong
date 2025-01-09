@@ -1,38 +1,35 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoGame.Core.Scripts.Entities;
-using MonoGame.Core.Scripts.Systems;
+using Newtonsoft.Json;
 
-namespace MonoGame.Core.Scripts.Scenes;
+namespace MonoGame.Data;
 
-public abstract class Scene(Game1 game) : Entity, IScene
+public class Scene : Entity, IScene
 {
-    public Game1 Game { get; } = game;
+    [JsonIgnore]
+    public Game Game { get; set; }
+    
+    [JsonIgnore]
     public InitialisationState State { get; private set; } = InitialisationState.NotRunning;
-    public IList<IEntity> Entities { get; } = [];
-    public IList<ISystem> Systems { get; } = [];
+
     public override Rectangle BoundingBox => new(0, 0, Game.GraphicsDevice.Viewport.Width,
         Game.GraphicsDevice.Viewport.Height);
     
-    public override void Initialise(Game1 game)
+    public override void Initialise(Game game)
     {
         State = InitialisationState.Initialising;
         
-        foreach (var entity in Entities)
-        {
-            entity.Initialise(game);
-        }
+        base.Initialise(game);
 
         State = InitialisationState.Initialised;
     }
 
-    public override void LoadContent(Game1 game)
+    public override void LoadContent(Game game)
     {
         State = InitialisationState.Loading;
             
-        foreach (var entity in Entities)
+        foreach (var entity in Children)
         {
             entity.LoadContent(game);
         }
@@ -68,12 +65,7 @@ public abstract class Scene(Game1 game) : Entity, IScene
 
     public override void Update(GameTime gameTime)
     {
-        foreach (var system in Systems)
-        {
-            system.Run(gameTime);
-        }
-
-        foreach (var entity in Entities)
+        foreach (var entity in Children)
         {
             entity.Update(gameTime);
         }
@@ -81,22 +73,15 @@ public abstract class Scene(Game1 game) : Entity, IScene
 
     public override void Draw()
     {
-        foreach (var entity in Entities)
+        foreach (var entity in Children)
         {
             entity.Draw();
         }
     }
 
-    public void Open(IScene scene)
-    {
-        Stop();
-        Game.ActiveScene = scene;
-        scene.Start();
-    }
-
     public override void Dispose()
     {
-        Parallel.ForEach(Entities, e => e.Dispose());
+        Parallel.ForEach(Children, e => e.Dispose());
         GC.SuppressFinalize(this);
     }
 }

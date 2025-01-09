@@ -1,9 +1,6 @@
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Core.Scripts.Components.Drawables;
-using MonoGame.Core.Utils.Extensions;
+using MonoGame.Data;
+using MonoGame.Data.Components.Drawables.Textures.Shapes;
 
 namespace MonoGame.Core.Scripts.Entities;
 
@@ -13,46 +10,22 @@ public sealed class Player : Entity
     
     private Rectangle _bounds;
     private bool _previouslyIntersectedBall;
-    private readonly Vector2 _size = new (20, 80);
-    public Ball Ball { get; init; }
+    public Ball Ball { get; set; }
 
-    public override Rectangle BoundingBox => new((int)(Transform.Position.X - _size.X / 2), 
-        (int)(Transform.Position.Y - _size.Y / 2), (int)_size.X, (int)_size.Y);
+    public override Rectangle BoundingBox
+    {
+        get
+        {
+            var size = GetComponent<RectangleTexture>().Size;
+            return new Rectangle((int)(Transform.Position.X - size.X / 2), (int)(Transform.Position.Y - size.Y / 2),
+                (int)size.X, (int)size.Y);
+        }
+    }
 
-    public override void Initialise(Game1 game)
+    public override void Initialise(Game game)
     {
         _bounds = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-        Transform.Position = new Vector2(80, game.GraphicsDevice.Viewport.Height / 2f);
-        
-        AddComponent(new RectangleDrawer { Size = _size, Color = Color.White, AnchorPoint = new Vector2(.5f, .5f)});
+        Transform.Position = new Vector2(128, game.GraphicsDevice.Viewport.Height / 2f);
         base.Initialise(game);
-    }
-    
-    public override void Update(GameTime gameTime)
-    {
-        var keyboardState = Keyboard.GetState();
-        var dir = Vector2.Zero;
-        var halfHeight = _size.Y / 2f;
-
-        if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up)) dir -= Vector2.UnitY;
-        if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) dir += Vector2.UnitY;
-
-        if (dir != Vector2.Zero)
-            Transform.Position += dir.Normalised() * MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        if (Transform.Position.Y - halfHeight <= 0)
-            Transform.Position = new Vector2(Transform.Position.X, halfHeight);
-        else if (Transform.Position.Y + halfHeight >= _bounds.Height)
-            Transform.Position = new Vector2(Transform.Position.X, _bounds.Height - halfHeight);
-
-        if (Ball.BoundingBox.Intersects(BoundingBox))
-        {
-            if (!_previouslyIntersectedBall) Ball.GetHitBy(this, Vector2.UnitX);    
-            _previouslyIntersectedBall = true;
-        }
-        else
-        {
-            _previouslyIntersectedBall = false;
-        }
     }
 }
