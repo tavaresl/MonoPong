@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
@@ -8,34 +10,11 @@ namespace MonoGame.Data;
 public class Scene : Entity, IScene
 {
     [JsonIgnore]
-    public Game Game { get; set; }
-    
-    [JsonIgnore]
-    public InitialisationState State { get; private set; } = InitialisationState.NotRunning;
+    public InitialisationState State { get; private set; } = InitialisationState.Ready;
 
     public override Rectangle BoundingBox => new(0, 0, Game.GraphicsDevice.Viewport.Width,
         Game.GraphicsDevice.Viewport.Height);
     
-    public override void Initialise(Game game)
-    {
-        State = InitialisationState.Initialising;
-        
-        base.Initialise(game);
-
-        State = InitialisationState.Initialised;
-    }
-
-    public override void LoadContent(Game game)
-    {
-        State = InitialisationState.Loading;
-            
-        foreach (var entity in Children)
-        {
-            entity.LoadContent(game);
-        }
-
-        State = InitialisationState.Ready;
-    }
 
     public void Start()
     {
@@ -45,9 +24,32 @@ public class Scene : Entity, IScene
         State = InitialisationState.Starting;
         
         // Startup Logic
-        Initialise(Game);
-        LoadContent(Game);
+        State = InitialisationState.Initialising;
+        var initialisationStack = new Stack<IEntity>([this]);
 
+        Initialised = true;
+
+        while (initialisationStack.TryPop(out var entity))
+        {
+            foreach (var component in entity.Components)
+            {
+                component.Entity = entity;
+                component.Game = Game;
+                
+                if (!component.Enabled || component.Initialised || !entity.Enabled) continue;
+
+                component.Initialise();
+                component.Initialised = true;
+            }
+
+            foreach (var child in entity.Children)
+            {
+                child.Parent = this;
+                child.Game = Game;
+                initialisationStack.Push(child);
+            }
+        }
+        
         State = InitialisationState.Started;
     }
 
@@ -61,22 +63,6 @@ public class Scene : Entity, IScene
         // Shutdown logic
 
         State = InitialisationState.NotRunning;
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        foreach (var entity in Children)
-        {
-            entity.Update(gameTime);
-        }
-    }
-
-    public override void Draw()
-    {
-        foreach (var entity in Children)
-        {
-            entity.Draw();
-        }
     }
 
     public override void Dispose()

@@ -13,11 +13,12 @@ public class Entity : IEntity
     private static int _lastUsedId = 0;
     
     [JsonIgnore] public int Id { get; } = ++_lastUsedId;
+    [JsonIgnore] public Game Game { get; set; }
     [JsonIgnore] public Entity Parent { get; set; } = null;
     [JsonIgnore] public bool Enabled { get; set; } = true;
     [JsonIgnore] public bool Initialised { get; set; }
-    [JsonIgnore] public IReadOnlyCollection<IComponent> Components => _components.ToImmutableHashSet();
-    [JsonIgnore] public IReadOnlyCollection<IEntity> Children => _children?.ToImmutableHashSet() ?? [];
+    [JsonIgnore] public IReadOnlyCollection<Component> Components => _components.ToImmutableHashSet();
+    [JsonIgnore] public IReadOnlyCollection<Entity> Children => _children?.ToImmutableHashSet() ?? [];
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public string Name { get; set; }
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public Transform Transform { get; set; }
     
@@ -44,6 +45,7 @@ public class Entity : IEntity
     
     public void AddComponent(Component component)
     {
+        component.Game = Game;
         component.Entity = this;
         _components.Add(component);
     }
@@ -52,7 +54,7 @@ public class Entity : IEntity
     {
         component.Entity = null;
         component.Dispose();
-        return  _components.Remove(component);
+        return _components.Remove(component);
     }
 
     public T GetComponent<T>() where T : Component
@@ -71,6 +73,7 @@ public class Entity : IEntity
 
     public void AddChild(Entity child)
     {
+        child.Game = Game;
         child.Parent = this;
         _children.Add(child);
     }
@@ -85,45 +88,36 @@ public class Entity : IEntity
         return _children.Single(c => c.Id == id);
     }
 
-    public virtual void Initialise(Game game)
+    public bool RemoveChild(Entity child)
     {
-        if (Initialised) return;
-
-        if (_components != null)
-            foreach (var component in _components)
-            {
-                component.Entity = this;
-                component.Initialise(game);
-            }
-        
-        if (_children != null)
-            foreach (var child in _children)
-            {
-                child.Parent = this;
-                child.Initialise(game);
-            }
-
-        Initialised = true;
+        if (!child.Parent.Equals(this)) return false;
+        child.Game = null;
+        child.Parent = null;
+        return _children.Remove(child);
     }
 
-    public virtual void LoadContent(Game game)
-    {
-        foreach (var entity in Children)
-        {
-            entity.LoadContent(game);
-        }
-    }
 
-    public virtual void Update(GameTime gameTime)
+    public void Destroy()
     {
-    }
-
-    public virtual void Draw()
-    {
+        Parent?.RemoveChild(this);
+        Dispose();
     }
     
     public virtual void Dispose()
     {
+        Game = null;
+        Parent = null;
+
+        foreach (var component in Components)
+        {
+            component.Dispose();
+        }
+
+        foreach (var child in Children)
+        {
+            child.Dispose();
+        }
+
         GC.SuppressFinalize(this);
     }
 

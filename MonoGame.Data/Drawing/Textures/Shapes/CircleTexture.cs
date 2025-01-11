@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 
-namespace MonoGame.Data.Components.Drawables.Textures.Shapes;
+namespace MonoGame.Data.Drawing.Textures.Shapes;
 
 public class CircleTexture : DrawableTexture
 {

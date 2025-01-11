@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Core.Scripts.Entities;
 using MonoGame.Data.Collision;
 using MonoGame.Data.Utils.Extensions;
 
@@ -13,10 +12,10 @@ public class PlayerControl : IPaddleControlStrategy
     public void RunOn(PaddleController controller, GameTime gameTime)
     {
         var ballCollider = controller.Ball.GetComponent<CircleCollider>();
+        var collider = controller.Entity.GetComponent<AabbCollider>();
         
         var keyboardState = Keyboard.GetState();
         var dir = Vector2.Zero;
-        
 
         if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up)) dir -= Vector2.UnitY;
         if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) dir += Vector2.UnitY;
@@ -24,9 +23,10 @@ public class PlayerControl : IPaddleControlStrategy
         if (dir != Vector2.Zero)
             controller.Entity.Transform.Position += dir.Normalised() * controller.MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (ballCollider.Intersects(controller.BoundingBox))
+        if (ballCollider.Intersects(collider))
         {
-            if (!_previouslyIntersectedBall && ballCollider.Entity is Ball ball) ball.GetHitBy(controller.Entity, Vector2.UnitX);    
+            var ballController = ballCollider.Entity.GetComponent<BallController>();
+            if (!_previouslyIntersectedBall) ballController.GetHitBy(controller.Entity, Vector2.UnitX);    
             _previouslyIntersectedBall = true;
         }
         else

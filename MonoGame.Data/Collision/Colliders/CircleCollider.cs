@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
 namespace MonoGame.Data.Collision;
 
@@ -8,7 +9,15 @@ public class CircleCollider : Component
     public float Radius { get; set; }
     public Vector2 Offset { get; set; }
 
-    public Vector2 RelativePosition => Entity.Transform.Position + Offset;
+    public float Diameter => Radius + Radius; 
+    public Vector2 RelativePosition => Transform.Position + Offset;
+
+    [JsonIgnore]
+    public Rectangle BoundingBox => new(
+        (int)(RelativePosition.X - Radius),
+        (int)(RelativePosition.Y - Radius),
+        (int)Diameter, 
+        (int)Diameter);
 
     public bool Intersects(CircleCollider other)
     {
@@ -16,7 +25,7 @@ public class CircleCollider : Component
         return distance <= Radius + other.Radius;
     }
 
-    public bool Intersects(AabbCollider aabb) => Intersects(aabb.Rectangle);
+    public bool Intersects(AabbCollider aabb) => Intersects(aabb.BoundingBox);
 
     public bool Intersects(Rectangle rectangle)
     {

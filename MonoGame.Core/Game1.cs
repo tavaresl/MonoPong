@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Core.Scripts.Scenes;
+using MonoGame.Core.Scripts.Systems;
 using MonoGame.Data;
+using MonoGame.Data.Drawing;
 using MonoGame.Data.Utils.Extensions;
 using MonoGame.Persistence.Scenes;
 
@@ -12,7 +11,7 @@ namespace MonoGame.Core;
 
 public class Game1 : Game
 {
-    public IScene ActiveScene { get; private set; }
+    public Scene ActiveScene { get; private set; }
     public GraphicsSettings GraphicsSettings { get; private set; }
 
     public Game1()
@@ -20,7 +19,6 @@ public class Game1 : Game
         GraphicsSettings = new GraphicsSettings(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        ActiveScene = new Gameplay { Game = this };
     }
 
     protected override void Initialize()
@@ -28,17 +26,23 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
         
         LoadSystems();
-        ActiveScene.Initialise(this);
-        
+        ActiveScene = SceneManager.Load("Content/Scenes/Gameplay.json");
+
+        if (ActiveScene == null)
+        {
+            Exit();
+            return;
+        }
+
+        ActiveScene.Game = this;
+        ActiveScene.Start();
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
         // TODO: use this.Content to load your game content here
-        
-        ActiveScene.LoadContent(this);
-        SceneManager.Save(ActiveScene, "Content/out.json");
+        // SceneManager.Save(ActiveScene, "Content/out.json");
     }
 
     protected override void Update(GameTime gameTime)
@@ -69,15 +73,18 @@ public class Game1 : Game
                     continue;
                 }
 
-                GameExtensions.Components.Add(component);
+                if (component.Initialised) GameExtensions.Components.Add(component);
+                else
+                {
+                    component.Initialise();
+                    component.Initialised = true;
+                }
             }
             
             foreach (var child in entity.Children)
                 stack.Push(child);
         }
         
-        
-        ActiveScene.Update(gameTime);
         base.Update(gameTime);
     }
 
@@ -87,7 +94,7 @@ public class Game1 : Game
         base.Draw(gameTime);
     }
 
-    public void OpenScene(IScene scene)
+    public void OpenScene(Scene scene)
     {
         ActiveScene.Stop();
         ActiveScene = scene;
@@ -96,20 +103,9 @@ public class Game1 : Game
 
     private void LoadSystems()
     {
-        var thisAssembly = typeof(Game1).Assembly;
-        var dataAssembly = typeof(GameSystemAttribute).Assembly;
-
-        foreach (var type in thisAssembly.GetTypes().Union(dataAssembly.GetTypes()).AsParallel())
-        {
-            var attributes = type.GetCustomAttributes(typeof(GameSystemAttribute), true);
-            if (attributes.Length != 0)
-            {
-                var instance = Activator.CreateInstance(type, [this]);
-                if (instance == null) continue;
-                
-                if (instance is GameComponent gameComponent)
-                    Components.Add(gameComponent);
-            }
-        }
+        Components.Add(new MatchManagement(this));
+        Components.Add(new BallMovement(this));
+        Components.Add(new PaddleMovement(this));
+        Components.Add(new DrawingSystem(this));
     }
 }

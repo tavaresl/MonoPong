@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using MonoGame.Core.Scripts.Entities;
 using MonoGame.Data.Collision;
 using MonoGame.Data.Utils.Extensions;
 
@@ -12,6 +11,7 @@ public class EnemyControl : IPaddleControlStrategy
     public void RunOn(PaddleController controller, GameTime gameTime)
     {
         var ballCollider = controller.Ball.GetComponent<CircleCollider>();
+        var collider = controller.Entity.GetComponent<AabbCollider>();
         var dir = Vector2.Zero;
         var halfHeight = controller.Size.Y / 2f;
         
@@ -21,9 +21,10 @@ public class EnemyControl : IPaddleControlStrategy
         if (dir != Vector2.Zero)
             controller.Entity.Transform.Position += dir.Normalised() * controller.MovementSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         
-        if (ballCollider.Intersects(controller.BoundingBox))
+        if (ballCollider.Intersects(collider))
         {
-            if (!_previouslyIntersectedBall && ballCollider.Entity is Ball ball) ball.GetHitBy(controller.Entity, -Vector2.UnitX);    
+            var ballController = ballCollider.Entity.GetComponent<BallController>();
+            if (!_previouslyIntersectedBall) ballController.GetHitBy(controller.Entity, -Vector2.UnitX);    
             _previouslyIntersectedBall = true;
         }
         else

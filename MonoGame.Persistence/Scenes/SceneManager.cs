@@ -8,17 +8,18 @@ public static class SceneManager
 {
     public static string RootDirectory { get; set; } = string.Empty;
     
-    public static IScene? Load(string path)
+    public static Scene? Load(string path)
     {
         using var sr = new StreamReader(path);
         var json = sr.ReadToEnd();
         return JsonConvert.DeserializeObject<Scene>(json, new JsonSerializerSettings
         {
-            //TypeNameHandling = TypeNameHandling.Objects
+            TypeNameHandling = TypeNameHandling.Objects
         });
+        
     }
 
-    public static void Save(object obj, string destination)
+    public static void Save(Scene obj, string destination)
     {
         using var sw = new StreamWriter(destination, Encoding.UTF8, new FileStreamOptions
         {
@@ -27,7 +28,7 @@ public static class SceneManager
         });
         var settings = new JsonSerializerSettings
         {
-            //TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameHandling = TypeNameHandling.Objects,
         };
 
 #if DEBUG

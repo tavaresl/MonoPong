@@ -4,7 +4,6 @@ namespace MonoGame.Data;
 
 public interface IScene : IEntity
 {
-    Game Game { get; }
     InitialisationState State { get; }
     
     void Start();

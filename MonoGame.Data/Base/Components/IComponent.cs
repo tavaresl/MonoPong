@@ -5,9 +5,10 @@ namespace MonoGame.Data;
 
 public interface IComponent : IDisposable
 {
-    Game Game { get; set; }
+    Game Game { get; internal set; }
+    IEntity Entity { get; internal set; }
+    bool Initialised { get; internal set; }
     bool Enabled { get; set; }
     string Name { get; set; }
-    IEntity Entity { get; set; }
-    void Initialise(Game game);
+    void Initialise();
 }

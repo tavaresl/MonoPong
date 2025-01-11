@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Foo", "MonoGame.Fo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Persistence", "MonoGame.Persistence\MonoGame.Persistence.csproj", "{D6EC5763-0ADD-401C-B90A-08B053220E8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Editor", "MonoGame.Editor\MonoGame.Editor.csproj", "{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}"
+EndProject
 
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,5 +33,9 @@ Global
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

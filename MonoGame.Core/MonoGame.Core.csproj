@@ -25,6 +25,9 @@
         <None Update="Content\Fonts\ArialRegular72.spritefont">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
+        <None Update="Content\Scenes\Gameplay.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">

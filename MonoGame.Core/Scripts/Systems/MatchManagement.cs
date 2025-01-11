@@ -1,38 +1,36 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using MonoGame.Core.Scripts.Components;
-using MonoGame.Core.Scripts.Entities;
 using MonoGame.Data;
+using MonoGame.Data.Collision;
+using MonoGame.Data.Drawing;
 using MonoGame.Data.Utils.Extensions;
 using Score = MonoGame.Core.Scripts.Components.Score;
 
 namespace MonoGame.Core.Scripts.Systems;
 
-[GameSystem(typeof(Gameplay))]
-public class MatchManagement(Game game) : GameComponent(game)
+public class MatchManagement(Game game) : GameSystem<Gameplay>(game)
 {
-    public override void Update(GameTime gameTime)
+    public override void Update(Gameplay gameplay, GameTime gameTime)
     {
-        var gameplay = Game.Query<Gameplay>().FirstOrDefault();
-
-        if (gameplay is null)
-            return;
-
         var score = gameplay.Score.GetComponent<Score>();
-        var ball = (Ball)gameplay.Ball;
-        var player = (Player)gameplay.Player;
-        var enemy = (Enemy)gameplay.Enemy;
+        var ballController = gameplay.Ball.GetComponent<BallController>();
+        var ballCollider = gameplay.Ball.GetComponent<CircleCollider>();
+        var playerCollider = gameplay.Player.GetComponent<AabbCollider>();
+        var enemyCollider = gameplay.Enemy.GetComponent<AabbCollider>();
         
-        if (ball.BoundingBox.X + ball.BoundingBox.Width > enemy.BoundingBox.X + enemy.BoundingBox.Width + 20)
+        if (ballCollider.BoundingBox.X + ballCollider.BoundingBox.Width > enemyCollider.BoundingBox.X + enemyCollider.BoundingBox.Width + 20)
         {
             score.PlayerPoints++;
-            ball.Reset();
+            ballController.Reset();
         }
 
-        if (ball.BoundingBox.X < player.BoundingBox.X - 20)
+        if (ballCollider.BoundingBox.X < playerCollider.BoundingBox.X - 20)
         {
             score.EnemyPoints++;
-            ball.Reset();
+            ballController.Reset();
         }
+
+        score.Entity.GetComponent<DrawableText>().Text = score.Text;
     }
 }

@@ -1,9 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Data.Drawing;
 using Newtonsoft.Json;
 
-namespace MonoGame.Data.Components.Drawables.Textures;
+namespace MonoGame.Data.Drawing.Textures;
 
 public abstract class DrawableTexture : DrawableComponent
 {
