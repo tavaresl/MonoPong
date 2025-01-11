@@ -1,37 +1,20 @@
 using System;
-using Microsoft.Xna.Framework;
 using MonoGame.Data;
 using MonoGame.Data.Utils.Extensions;
-using Newtonsoft.Json;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace MonoGame.Core.Scripts.Components;
 
 public class BallController : Component
 {
     private const float QuarterPi = float.Pi / 4f;
-    
-    [JsonIgnore] public Vector2 InitialPosition { get; private set; }
-    [JsonIgnore] public float InitialSpeed { get; private set; }
-    public Vector2 Dir { get; set; }
+    public Vector2 Dir { get;  set; }
     public float Acceleration { get; set; }
     public float Speed { get; set; }
-
-
-    public override void Initialise()
-    {
-        InitialPosition = Transform.Position;
-        InitialSpeed = Speed;
-    }
     
     public void Reflect(Vector2 normal)
     {
         Dir = Dir.Reflected(normal);
-    }
-
-    public void Reset()
-    {
-        Transform.Position = InitialPosition;
-        Speed = InitialSpeed;
     }
 
     public void GetHitBy(IEntity entity, Vector2 normal)

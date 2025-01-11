@@ -7,6 +7,8 @@ namespace MonoGame.Data;
 
 public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(game) where T : IDrawableComponent
 {
+    public GameSystemEventBus EventBus { get; init; }
+
     public sealed override void Update(GameTime gameTime)
     {
         var components = Game.Query<T>();

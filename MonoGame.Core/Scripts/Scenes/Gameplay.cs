@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Core.Scripts.Components;
-using MonoGame.Core.Scripts.Components.Paddles;
 using MonoGame.Data;
 using MonoGame.Data.Collision;
 using MonoGame.Data.Drawing;
@@ -37,7 +36,7 @@ public class Gameplay : Scene
         });
         score.AddComponent(new Score());
         player.AddComponent(new RectangleTexture { Size = paddleSize, Color = Color.White, AnchorPoint = new Vector2(0.5f, 0.5f) });
-        player.AddComponent(new PaddleController { Ball = ball, Size = paddleSize, Handler = new PlayerControl() });
+        player.AddComponent(new Paddle { Ball = ball, Size = paddleSize });
         player.AddComponent(new AabbCollider
         {
             X = -(int)paddleSize.X / 2,
@@ -46,7 +45,7 @@ public class Gameplay : Scene
             Height = (int)paddleSize.Y
         });
         enemy.AddComponent(new RectangleTexture { Size = paddleSize, Color = Color.White, AnchorPoint = new Vector2(0.5f, 0.5f) });
-        enemy.AddComponent(new PaddleController { Ball = ball, Size = paddleSize, Handler = new EnemyControl() });
+        enemy.AddComponent(new Paddle { Ball = ball, Size = paddleSize });
         enemy.AddComponent(new AabbCollider
         {
             X = -(int)paddleSize.X / 2,

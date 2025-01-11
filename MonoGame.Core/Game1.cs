@@ -103,9 +103,12 @@ public class Game1 : Game
 
     private void LoadSystems()
     {
-        Components.Add(new MatchManagement(this));
-        Components.Add(new BallMovement(this));
-        Components.Add(new PaddleMovement(this));
-        Components.Add(new DrawingSystem(this));
+        var eventSystem = new GameSystemEventBus();
+        Components.Add(new MatchManagement(this) { EventBus = eventSystem });
+        Components.Add(new BallMovement(this) { EventBus = eventSystem });
+        Components.Add(new AiMovementController(this) { EventBus = eventSystem });
+        Components.Add(new PlayerController(this) { EventBus = eventSystem });
+        Components.Add(new PaddleCollision(this) { EventBus = eventSystem });
+        Components.Add(new DrawingSystem(this) { EventBus = eventSystem });
     }
 }

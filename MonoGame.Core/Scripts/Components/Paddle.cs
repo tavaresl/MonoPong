@@ -1,13 +1,12 @@
 using Microsoft.Xna.Framework;
 using MonoGame.Data;
 
-namespace MonoGame.Core.Scripts.Components.Paddles;
+namespace MonoGame.Core.Scripts.Components;
 
-public class PaddleController : Component
+public class Paddle : Component
 {
     public readonly float MovementSpeed = 300f;
     public IEntity Ball { get; set; }
     public Vector2 Size { get; set; }
-
-    public IPaddleControlStrategy Handler { get; set;  }
+    public Vector2 HitDirection { get; set; }
 }

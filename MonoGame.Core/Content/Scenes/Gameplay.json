@@ -65,7 +65,7 @@
             "$type": "MonoGame.Core.Scripts.Components.BallController, MonoGame.Core",
             "Speed": 512.0,
             "Dir": "-1, 1",
-            "Acceleration": 4.0,
+            "Acceleration": 8.0,
             "Name": "BallController",
             "Transform": {
               "$type": "MonoGame.Data.Transform, MonoGame.Data",
@@ -126,15 +126,13 @@
           },
           {
             "$id": "9",
-            "$type": "MonoGame.Core.Scripts.Components.Paddles.PaddleController, MonoGame.Core",
+            "$type": "MonoGame.Core.Scripts.Components.Paddle, MonoGame.Core",
             "MovementSpeed": 300.0,
             "Ball": {
               "$ref": "3"
             },
             "Size": "24, 96",
-            "Handler": {
-              "$type": "MonoGame.Core.Scripts.Components.Paddles.PlayerControl, MonoGame.Core"
-            },
+            "HitDirection": "1, 0",
             "Name": "PaddleController",
             "Transform": {
               "$type": "MonoGame.Data.Transform, MonoGame.Data",
@@ -142,6 +140,9 @@
               "Scale": "1, 1",
               "Rotation": 0.0
             }
+          },
+          {
+            "$type": "MonoGame.Core.Scripts.Components.PlayerControl, MonoGame.Core"
           },
           {
             "$id": "10",
@@ -204,15 +205,13 @@
           },
           {
             "$id": "13",
-            "$type": "MonoGame.Core.Scripts.Components.Paddles.PaddleController, MonoGame.Core",
+            "$type": "MonoGame.Core.Scripts.Components.Paddle, MonoGame.Core",
             "MovementSpeed": 300.0,
             "Ball": {
               "$ref": "3"
             },
             "Size": "24, 96",
-            "Handler": {
-              "$type": "MonoGame.Core.Scripts.Components.Paddles.EnemyControl, MonoGame.Core"
-            },
+            "HitDirection": "-1, 0",
             "Name": "PaddleController",
             "Transform": {
               "$type": "MonoGame.Data.Transform, MonoGame.Data",
@@ -220,6 +219,9 @@
               "Scale": "1, 1",
               "Rotation": 0.0
             }
+          },
+          {
+            "$type": "MonoGame.Core.Scripts.Components.AiControl, MonoGame.Core"
           },
           {
             "$id": "14",
