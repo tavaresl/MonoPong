@@ -12,7 +12,7 @@ public class Scene : Entity, IScene
         set
         {
             base.Enabled = value;
-            if (value && !Started) Start();
+            if (base.Enabled && !Started) Start();
         }
     }
 
@@ -31,7 +31,11 @@ public class Scene : Entity, IScene
             if (entity is ReferenceScene reference)
             {
                 if (reference.Load(out var newChild)) ReplaceChild(entity, newChild);
-                else RemoveChild(entity);
+                else
+                {
+                    RemoveChild(entity);
+                    continue;
+                }
 
                 newChild.Enabled = entity.Enabled;
                 newChild.Name = entity.Name;

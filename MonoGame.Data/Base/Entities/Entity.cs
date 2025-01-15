@@ -11,22 +11,38 @@ namespace MonoGame.Data;
 [JsonObject(IsReference = true)]
 public class Entity : IEntity  
 {
-    private static int _lastUsedId = 0;
+    private static int _lastUsedId;
     private bool _disposed;
+
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Enabled")]
+    private bool _enabled = true;
     
-    [JsonIgnore] public int Id { get; } = ++_lastUsedId;
+    public event EventHandler<bool> EnabledChanged;
+    public event EventHandler Destroyed;
+
+    public void OnEnabledChanged(bool enabled) => EnabledChanged?.Invoke(this, enabled);
+    public void OnDestroyed() => Destroyed?.Invoke(this, EventArgs.Empty);
+    
+    
+    [JsonIgnore] public int Id { get; set; } = ++_lastUsedId;
     [JsonIgnore] public Game Game { get; set; }
-    [JsonIgnore] public Entity Parent { get; set; } = null;
+    [JsonIgnore] public Entity Parent { get; set; } 
     [JsonIgnore] public bool Initialised { get; set; }
-    
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public virtual bool Enabled { get; set; } = true;
-    
+    [JsonIgnore] public virtual bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            _enabled = value;
+            OnEnabledChanged(value);
+        }
+    }
+
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public string Name { get; set; }
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public required Transform Transform { get; init;  }
+    public required Transform Transform { get; init; }
     
     
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Components")]
@@ -143,6 +159,7 @@ public class Entity : IEntity
     {
         Parent?.RemoveChild(this);
         Dispose();
+        OnDestroyed();
     }
     
     public void Dispose()
@@ -175,6 +192,6 @@ public class Entity : IEntity
 
     public override int GetHashCode()
     {
-        return (int)Id;
+        return Id;
     }
 }

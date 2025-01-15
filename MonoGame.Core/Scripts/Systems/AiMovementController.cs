@@ -11,13 +11,14 @@ public class AiMovementController(Game game) : GameSystem<AiControl>(game)
 {
     public override void OnInitialise()
     {
+        On(GameEvents.MatchStarted, OnMatchStarted);
+        On(GameEvents.MatchResumed, OnMatchStarted);
+        On(GameEvents.MatchPaused, OnMatchEnded);
         On(GameEvents.MatchEnded, OnMatchEnded);
     }
 
-    private void OnMatchEnded(GameSystemEvent obj)
-    {
-        Paused = true;
-    }
+    private void OnMatchStarted(GameSystemEvent obj) => Paused = false;
+    private void OnMatchEnded(GameSystemEvent obj) => Paused = true;
 
     public override void Update(AiControl component, GameTime gameTime)
     {

@@ -8,7 +8,6 @@ namespace MonoGame.Data.Drawing;
 public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(game) where T : DrawableComponent
 {
     public bool Paused { get; protected set; }
-    public GameSystemEventsManager EventBus { get; init; }
 
     public override void Initialize()
     {

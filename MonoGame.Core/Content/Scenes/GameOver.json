@@ -1,10 +1,5 @@
 {
-  "Name": "PauseScreen",
-  "Components": [
-    {
-      "$type": "MonoGame.Core.Scripts.Components.PauseScreen, MonoGame.Core"
-    }
-  ],
+  "Name": "GameOverScreen",
   "Children": [
     {
       "Name": "Background",
@@ -27,7 +22,7 @@
       "Components": [
         {
           "$type": "MonoGame.Data.Drawing.GUI.TextLabel, MonoGame.Data",
-          "Text": "Pause",
+          "Text": "Game Over",
           "FontName": "Fonts/ArialRegular72",
           "AnchorPoint": "0.5, 0",
           "Layer": 2
@@ -35,7 +30,7 @@
       ]
     },
     {
-      "Name": "ResumeButton",
+      "Name": "RestartButton",
       "Transform": {
         "Position": "640, 200"
       },
@@ -43,7 +38,7 @@
         {
           "$type": "MonoGame.Data.Drawing.GUI.Button, MonoGame.Data",
           "Padding": [16, 24, 16, 24],
-          "Label": "Resume",
+          "Label": "Restart",
           "FontName": "Fonts/ArialRegular36",
           "AnchorPoint": "0.5, 0",
           "Layer": 2

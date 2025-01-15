@@ -12,7 +12,8 @@ public class GameEvents
     #region Match Events
 
     public const string MatchStarted = "MatchStarted";
-    public const string MatchRestarted = "MatchRestarted";
+    public const string MatchPaused = "MatchPaused";
+    public const string MatchResumed = "MatchResumed";
     public const string MatchEnded = "MatchEnded";
 
     #endregion

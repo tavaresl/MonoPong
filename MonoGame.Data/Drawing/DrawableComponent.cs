@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace MonoGame.Data.Drawing;
 
-public abstract class DrawableComponent : Component, IDrawableComponent
+public abstract class DrawableComponent : Component
 {
     
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

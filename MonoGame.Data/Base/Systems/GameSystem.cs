@@ -8,7 +8,6 @@ namespace MonoGame.Data;
 
 public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : Component
 {
-    public GameSystemEventsManager EventBus { get; init; }
     public bool Paused { get; protected set; }
 
     protected T[] Components => Game.Query<T>();
@@ -17,11 +16,32 @@ public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : C
     {
         OnInitialise();
         
-        foreach (var component in Components.Where(c => c.Enabled))
+        foreach (var component in Components)
         {
-            Initialise(component);
-            component.Initialise();
-            component.Initialised = true;
+            if (component.Enabled)
+            {
+                DoInitialiseComponent();
+            }
+            else
+            {
+                EventHandler<bool> onComponentEnabled = null;
+                onComponentEnabled = (sender, b) =>
+                {
+                    DoInitialiseComponent();
+                    component.EnabledChanged -= onComponentEnabled;
+                };
+
+                component.EnabledChanged += onComponentEnabled;
+            }
+
+            continue;
+
+            void DoInitialiseComponent()
+            {
+                Initialise(component);
+                component.Initialise();
+                component.Initialised = true;
+            }
         }
     }
     
@@ -35,7 +55,6 @@ public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : C
         {
             if (!component.Initialised)
             {
-                Console.WriteLine($"Initialising {component.Name}");
                 Initialise(component);
                 component.Initialise();
                 component.Initialised = true;

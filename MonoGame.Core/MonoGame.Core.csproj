@@ -55,6 +55,9 @@
         <None Update="Content\Fonts\ArialRegular60.spritefont">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
+        <None Update="Content\Scenes\GameOver.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">

@@ -240,7 +240,7 @@
           }
         ],
         "Children": [],
-        "Name": "Entity",
+        "Name": "Enemy",
         "Transform": {
           "$type": "MonoGame.Data.Transform, MonoGame.Data",
           "Position": "1152, 360",
@@ -389,6 +389,17 @@
       "Name": "Pause",
       "Enabled": false,
       "Path": "Content/Scenes/Pause.json"
+    },
+    {
+      "$type": "MonoGame.Data.ReferenceScene, MonoGame.Data",
+      "Name": "GameOver",
+      "Enabled": false,
+      "Path": "Content/Scenes/GameOver.json",
+      "Components": [
+        {
+          "$type": "MonoGame.Core.Scripts.Components.GameOver, MonoGame.Core"
+        }
+      ]
     }
   ],
   "Name": "Gameplay",

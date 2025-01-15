@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core.Scripts.Components;
+using MonoGame.Core.Scripts.Events;
 using MonoGame.Data;
 using MonoGame.Data.Events;
 using MonoGame.Data.Utils.Extensions;
@@ -11,13 +12,14 @@ public class PlayerController(Game game) : GameSystem<PlayerControl>(game)
 {
     public override void OnInitialise()
     {
-        On("MatchEnded", OnMatchEnded);
+        On(GameEvents.MatchStarted, OnMatchStarted);
+        On(GameEvents.MatchResumed, OnMatchStarted);
+        On(GameEvents.MatchPaused, OnMatchEnded);
+        On(GameEvents.MatchEnded, OnMatchEnded);
     }
 
-    private void OnMatchEnded(GameSystemEvent obj)
-    {
-        Paused = true;
-    }
+    private void OnMatchStarted(GameSystemEvent obj) => Paused = false;
+    private void OnMatchEnded(GameSystemEvent obj) => Paused = true;
 
     public override void Update(PlayerControl component, GameTime gameTime)
     {

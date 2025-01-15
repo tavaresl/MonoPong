@@ -33,7 +33,7 @@ public static class GameExtensions
         }
     }
 
-    internal static T[] Query<T>(this Game game) where T : IComponent
+    internal static T[] Query<T>(this Game game) where T : Component
     {
         return Components
             .Where(c => c is T)

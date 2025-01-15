@@ -19,6 +19,8 @@ public class ReferenceScene : Entity
             foreach (Component component in Components) scene.AddComponent(component);
             foreach (Entity child in Children) scene.AddChild(child);
 
+            scene.Id = Id;
+
             return true;
         }   
         catch

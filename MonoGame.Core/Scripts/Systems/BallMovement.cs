@@ -21,7 +21,9 @@ public class BallMovement(Game game) : GameSystem<BallController>(game)
     public override void OnInitialise()
     {
         On(GameEvents.MatchEnded, OnMatchEnded);
+        On(GameEvents.MatchResumed, OnMatchResumed);
         On(GameEvents.MatchStarted, OnMatchStarted);
+        On(GameEvents.MatchPaused, OnMatchEnded);
         On(GameEvents.Scored, OnScore);
     }
 
@@ -59,11 +61,6 @@ public class BallMovement(Game game) : GameSystem<BallController>(game)
         ball.Dir = _initialDir.GetValueOrDefault();
         _shouldReset = false;
     }
-    private void Stop(BallController ball)
-    {
-        ball.Speed = 0;
-        ball.Dir = Vector2.Zero;
-    }
 
     private void OnMatchEnded(GameSystemEvent evt)
     {
@@ -72,12 +69,17 @@ public class BallMovement(Game game) : GameSystem<BallController>(game)
 
     private void OnMatchStarted(GameSystemEvent evt)
     {
-        Paused = false;
         _shouldReset = true;
+        Paused = false;
     }
 
     private void OnScore(GameSystemEvent evt)
     {
         _shouldReset = true;
+    }
+
+    private void OnMatchResumed(GameSystemEvent evt)
+    {
+        Paused = false;
     }
 }

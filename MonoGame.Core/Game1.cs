@@ -7,6 +7,7 @@ using MonoGame.Data.Collision;
 using MonoGame.Data.Drawing.GUI;
 using MonoGame.Data.Drawing.Sprites;
 using MonoGame.Data.Events;
+using MonoGame.Data.Scripting;
 using MonoGame.Data.Utils.Extensions;
 
 namespace MonoGame.Core;
@@ -69,20 +70,20 @@ public class Game1 : Game
 
     private void LoadSystems()
     {
-        var eventSystem = new GameSystemEventsManager();
         var collisionRegions = new CollisionRegions<Collider>();
         
-        Components.Add(new CollisionRegionsSystem(this) { EventBus = eventSystem, Regions = collisionRegions});
-        Components.Add(new MatchManagement(this) { EventBus = eventSystem });
-        Components.Add(new BallMovement(this) { EventBus = eventSystem });
-        Components.Add(new AiMovementController(this) { EventBus = eventSystem });
-        Components.Add(new PlayerController(this) { EventBus = eventSystem });
-        Components.Add(new PaddleCollision(this) { EventBus = eventSystem });
-        Components.Add(new PauseManagement(this) { EventBus = eventSystem });
-        Components.Add(new GuiInteractionSystem(this) { EventBus = eventSystem });
-        Components.Add(new CollisionDetector(this) { EventBus = eventSystem, Regions = collisionRegions });
-        Components.Add(new SpriteDrawingSystem(this) { EventBus = eventSystem });
-        Components.Add(new GuiDrawingSystem(this) { EventBus = eventSystem });
+        Components.Add(new CollisionRegionsSystem(this) { Regions = collisionRegions });
+        Components.Add(new ScriptableComponentRunner(this));
+        Components.Add(new MatchManagement(this));
+        Components.Add(new BallMovement(this));
+        Components.Add(new AiMovementController(this));
+        Components.Add(new PlayerController(this));
+        Components.Add(new PaddleCollision(this));
+        Components.Add(new PauseManagement(this));
+        Components.Add(new GuiInteractionSystem(this));
+        Components.Add(new CollisionDetector(this) { Regions = collisionRegions });
+        Components.Add(new SpriteDrawingSystem(this));
+        Components.Add(new GuiDrawingSystem(this));
     }
 
     private void BuildComponentList()
@@ -95,7 +96,7 @@ public class Game1 : Game
         {
             if (!entity.Enabled)
             {
-                foreach (var component in entity.Components) GameExtensions.RemoveComponent(component);
+                RemoveEntityComponents(entity);
                 continue;
             }
 
@@ -110,5 +111,18 @@ public class Game1 : Game
         }
 
         GameExtensions.Flatten();
+    }
+
+    private static void RemoveEntityComponents(IEntity rootEntity)
+    {
+        var removalStack = new Stack<IEntity>();
+        
+        removalStack.Push(rootEntity);
+
+        while (removalStack.TryPop(out var entity))
+        {
+            foreach (var component in entity.Components) GameExtensions.RemoveComponent(component);
+            foreach (var child in entity.Children) removalStack.Push(child);
+        }
     }
 }
