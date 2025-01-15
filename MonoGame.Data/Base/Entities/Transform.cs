@@ -5,6 +5,7 @@ namespace MonoGame.Data;
 
 public class Transform
 {
+    public Entity Entity { get; init; }
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -13,5 +14,17 @@ public class Transform
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public float Rotation { get; set; }
+
+    [JsonIgnore]
+    public Vector2 AbsolutePosition =>
+        Vector2.Add(Entity.Parent?.Transform.AbsolutePosition ?? Vector2.Zero, Position);
+    
+    [JsonIgnore]
+    public Vector2 AbsoluteScale =>
+        Vector2.Multiply(Entity.Parent?.Transform.AbsoluteScale ?? Vector2.One, Scale);
+
+    [JsonIgnore]
+    public float AbsoluteRotation =>
+        (Entity.Parent?.Transform.AbsoluteRotation ?? 0f) + Rotation;
 }
  

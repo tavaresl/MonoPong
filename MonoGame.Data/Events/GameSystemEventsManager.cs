@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace MonoGame.Data;
+namespace MonoGame.Data.Events;
 
-public class GameSystemEventBus
+public class GameSystemEventsManager
 {
     private readonly Dictionary<string, HashSet<Action<GameSystemEvent>>> _topics = new ();
 
@@ -23,18 +22,22 @@ public class GameSystemEventBus
     }
 
     
-    public void Notify(string topic, IGameComponent sender, object data)
+    public void Publish(string topic, IGameComponent sender, object data)
     {
-        Parallel.ForEach(_topics[topic], handler => handler.Invoke(new GameSystemEvent
+        if (!_topics.TryGetValue(topic, out var handlers)) return;
+
+        Parallel.ForEach(handlers, handler => handler.Invoke(new GameSystemEvent
         {
             Sender = sender,
             Data = data,
         }));
     }
     
-    public void Notify(string topic,  IGameComponent sender)
+    public void Publish(string topic,  IGameComponent sender)
     {
-        Parallel.ForEach(_topics[topic], handler => handler.Invoke(new GameSystemEvent
+        if (!_topics.TryGetValue(topic, out var handlers)) return;
+
+        Parallel.ForEach(handlers, handler => handler.Invoke(new GameSystemEvent
         {
             Sender = sender,
         }));

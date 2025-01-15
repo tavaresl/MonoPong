@@ -4,16 +4,16 @@ using Newtonsoft.Json;
 
 namespace MonoGame.Data.Collision;
 
-public class CircleCollider : Component
+public class CircleCollider : Collider
 {
     public float Radius { get; set; }
     public Vector2 Offset { get; set; }
 
     public float Diameter => Radius + Radius; 
-    public Vector2 RelativePosition => Transform.Position + Offset;
+    public override Vector2 RelativePosition => Transform.AbsolutePosition + Offset;
 
     [JsonIgnore]
-    public Rectangle BoundingBox => new(
+    public override Rectangle BoundingBox => new(
         (int)(RelativePosition.X - Radius),
         (int)(RelativePosition.Y - Radius),
         (int)Diameter, 
@@ -21,6 +21,7 @@ public class CircleCollider : Component
 
     public bool Intersects(CircleCollider other)
     {
+        if (other == this) return false;
         var distance = Vector2.Distance(RelativePosition, other.RelativePosition); 
         return distance <= Radius + other.Radius;
     }
@@ -49,5 +50,16 @@ public class CircleCollider : Component
             return true;
         }
         return false;
+    }
+    
+    
+    public override bool IsCollidingWith(Collider other)
+    {
+        return other switch
+        {
+            AabbCollider aabb => Intersects(aabb),
+            CircleCollider circle => Intersects(circle),
+            _ => false
+        };
     }
 }

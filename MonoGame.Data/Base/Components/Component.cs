@@ -7,6 +7,8 @@ namespace MonoGame.Data;
 [JsonObject(IsReference = true)]
 public abstract class Component : IComponent
 {
+    private static int _lastUsedId;
+    [JsonIgnore] public int Id { get; } = ++_lastUsedId;
     [JsonIgnore] public virtual Game Game { get; set; }
     [JsonIgnore] public virtual IEntity Entity { get; set; }
     [JsonIgnore] public bool Initialised { get; set; }

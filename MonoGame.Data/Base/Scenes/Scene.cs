@@ -1,45 +1,49 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace MonoGame.Data;
 
 public class Scene : Entity, IScene
 {
-    [JsonIgnore]
-    public InitialisationState State { get; private set; } = InitialisationState.Ready;
+    public override bool Enabled
+    {
+        get => base.Enabled;
+        set
+        {
+            base.Enabled = value;
+            if (value && !Started) Start();
+        }
+    }
 
-    public override Rectangle BoundingBox => new(0, 0, Game.GraphicsDevice.Viewport.Width,
-        Game.GraphicsDevice.Viewport.Height);
-    
+    [JsonIgnore] public bool Started { get; set; }
+    [JsonIgnore] public bool Paused { get; set; }
 
     public void Start()
     {
-        if (State != InitialisationState.Ready)
-            throw new InvalidOperationException("cannot start a not-ready scene");
-
-        State = InitialisationState.Starting;
+        if (Started) return;
+        Started = true;
         
-        // Startup Logic
-        State = InitialisationState.Initialising;
-        var initialisationStack = new Stack<IEntity>([this]);
-
-        Initialised = true;
+        var initialisationStack = new Stack<Entity>([this]);
 
         while (initialisationStack.TryPop(out var entity))
         {
+            if (entity is ReferenceScene reference)
+            {
+                if (reference.Load(out var newChild)) ReplaceChild(entity, newChild);
+                else RemoveChild(entity);
+
+                newChild.Enabled = entity.Enabled;
+                newChild.Name = entity.Name;
+                entity = newChild;
+            }
+
+            if (entity is Scene { Enabled: true } scene) scene.Start();
+
             foreach (var component in entity.Components)
             {
                 component.Entity = entity;
                 component.Game = Game;
-                
-                if (!component.Enabled || component.Initialised || !entity.Enabled) continue;
-
-                component.Initialise();
-                component.Initialised = true;
             }
 
             foreach (var child in entity.Children)
@@ -49,25 +53,13 @@ public class Scene : Entity, IScene
                 initialisationStack.Push(child);
             }
         }
-        
-        State = InitialisationState.Started;
     }
 
     public void Stop()
     {
-        if (State != InitialisationState.Started)
-            throw new InvalidOperationException("cannot stop a non-started scene");
+        Started = false;
 
-        State = InitialisationState.Stopping;
-        
-        // Shutdown logic
-
-        State = InitialisationState.NotRunning;
-    }
-
-    public override void Dispose()
-    {
-        Parallel.ForEach(Children, e => e.Dispose());
-        GC.SuppressFinalize(this);
+        foreach (var scene in Children.Where(c => c is IScene).Cast<Scene>())
+            scene.Stop();
     }
 }

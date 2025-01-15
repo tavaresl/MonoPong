@@ -12,7 +12,7 @@ public interface IEntity : IDisposable, IEquatable<IEntity>
     bool Enabled { get; set; }
     bool Initialised { get; set; }
     string Name { get; set; }
-    public Transform Transform { get; set; }
+    Transform Transform { get; init; }
     IReadOnlyCollection<Component> Components { get; }
     IReadOnlyCollection<Entity> Children { get; }
     
@@ -26,4 +26,10 @@ public interface IEntity : IDisposable, IEquatable<IEntity>
     Entity GetChild(string name);
     Entity GetChild(int id);
     void AddChild(Entity child);
+    bool TryGetComponent<T>(out T component) where T : Component;
+    bool TryGetComponent<T>(string name, out T component) where T : Component;
+    bool TryGetChild(string name, out Entity entity);
+    bool RemoveChild(Entity child);
+    bool ReplaceChild(Entity child, Entity newChild);
+    void Destroy();
 }

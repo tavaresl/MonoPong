@@ -1,10 +1,9 @@
-using Microsoft.Xna.Framework;
-
 namespace MonoGame.Data;
 
 public interface IScene : IEntity
 {
-    InitialisationState State { get; }
+    bool Started { get; set; }
+    bool Paused { get; set; }
     
     void Start();
     void Stop();

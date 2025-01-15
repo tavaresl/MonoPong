@@ -11,7 +11,7 @@
         "Components": [
           {
             "$id": "4",
-            "$type": "MonoGame.Data.Drawing.Textures.Shapes.CircleTexture, MonoGame.Data",
+            "$type": "MonoGame.Data.Drawing.Sprites.Shapes.CircleTexture, MonoGame.Data",
             "Radius": 16.0,
             "Color": {
               "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
@@ -90,7 +90,7 @@
         "Components": [
           {
             "$id": "8",
-            "$type": "MonoGame.Data.Drawing.Textures.Shapes.RectangleTexture, MonoGame.Data",
+            "$type": "MonoGame.Data.Drawing.Sprites.Shapes.RectangleTexture, MonoGame.Data",
             "Color": {
               "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
               "B": 255,
@@ -169,7 +169,7 @@
         "Components": [
           {
             "$id": "12",
-            "$type": "MonoGame.Data.Drawing.Textures.Shapes.RectangleTexture, MonoGame.Data",
+            "$type": "MonoGame.Data.Drawing.Sprites.Shapes.RectangleTexture, MonoGame.Data",
             "Color": {
               "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
               "B": 255,
@@ -254,7 +254,7 @@
         "Components": [
           {
             "$id": "16",
-            "$type": "MonoGame.Data.Drawing.DrawableText, MonoGame.Data",
+            "$type": "MonoGame.Data.Drawing.GUI.TextLabel, MonoGame.Data",
             "Size": "0, 0",
             "Text": "",
             "FontName": "Fonts/ArialRegular72",
@@ -275,7 +275,7 @@
               "Width": 0,
               "Height": 0
             },
-            "Name": "DrawableText",
+            "Name": "TextLabel",
             "Transform": {
               "$type": "MonoGame.Data.Transform, MonoGame.Data",
               "Position": "640, 20",
@@ -323,7 +323,7 @@
       "Components": [
         {
           "$id": "19",
-          "$type": "MonoGame.Data.Drawing.Textures.Shapes.DashedLineTexture, MonoGame.Data",
+          "$type": "MonoGame.Data.Drawing.Sprites.Shapes.DashedLineTexture, MonoGame.Data",
           "Pattern": [
             16,
             16
@@ -383,6 +383,12 @@
     },
     {
       "$ref": "15"
+    },
+    {
+      "$type": "MonoGame.Data.ReferenceScene, MonoGame.Data",
+      "Name": "Pause",
+      "Enabled": false,
+      "Path": "Content/Scenes/Pause.json"
     }
   ],
   "Name": "Gameplay",

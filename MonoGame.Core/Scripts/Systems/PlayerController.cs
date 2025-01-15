@@ -2,15 +2,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core.Scripts.Components;
 using MonoGame.Data;
+using MonoGame.Data.Events;
 using MonoGame.Data.Utils.Extensions;
 
 namespace MonoGame.Core.Scripts.Systems;
 
 public class PlayerController(Game game) : GameSystem<PlayerControl>(game)
 {
-    public override void Initialize()
+    public override void OnInitialise()
     {
-        EventBus.Subscribe("MatchEnded", OnMatchEnded);
+        On("MatchEnded", OnMatchEnded);
     }
 
     private void OnMatchEnded(GameSystemEvent obj)

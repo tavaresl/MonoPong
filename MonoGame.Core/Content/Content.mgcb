@@ -9,7 +9,7 @@
 /compress:False
 
 #-------------------------------- References --------------------------------#
-/reference:../../MonoGame.Data/bin/Release/net8.0/MonoGame.Data.dll
+
 
 #---------------------------------- Content ---------------------------------#
 
@@ -20,6 +20,62 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/ArialRegular12.spritefont
 
+#begin Fonts/ArialRegular14.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular14.spritefont
+
+#begin Fonts/ArialRegular16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular16.spritefont
+
+#begin Fonts/ArialRegular18.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular18.spritefont
+
+
+#begin Fonts/ArialRegular24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular24.spritefont
+
+#begin Fonts/ArialRegular30.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular30.spritefont
+
+#begin Fonts/ArialRegular36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular36.spritefont
+
+#begin Fonts/ArialRegular48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular48.spritefont
+
+#begin Fonts/ArialRegular60.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/ArialRegular60.spritefont
 
 #begin Fonts/ArialRegular72.spritefont
 /importer:FontDescriptionImporter

@@ -15,13 +15,16 @@ public abstract class DrawableComponent : Component, IDrawableComponent
     
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public float Layer { get; set; } = 0f;
-    
+
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public Color Mask { get; set; } = Color.White;
+    public float Opacity { get; set; } = 1f;
     
+    [JsonIgnore]
+    public Color Mask => new (255, 255, 255, Opacity);
+
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public virtual Rectangle Bounds { get; set; }
-    
+    public virtual Rectangle Bounds { get; }
+
     [JsonIgnore]
     public abstract Vector2 Origin { get; }
 }

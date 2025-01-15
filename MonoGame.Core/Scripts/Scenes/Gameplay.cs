@@ -3,7 +3,8 @@ using MonoGame.Core.Scripts.Components;
 using MonoGame.Data;
 using MonoGame.Data.Collision;
 using MonoGame.Data.Drawing;
-using MonoGame.Data.Drawing.Textures.Shapes;
+using MonoGame.Data.Drawing.GUI;
+using MonoGame.Data.Drawing.Sprites.Shapes;
 using Score = MonoGame.Core.Scripts.Components.Score;
 
 namespace MonoGame.Core.Scripts.Scenes;
@@ -29,7 +30,7 @@ public class Gameplay : Scene
             StrokeWidth = 4,
             Length = 720
         });
-        score.AddComponent(new DrawableText
+        score.AddComponent(new TextLabel
         {
             FontName = "Fonts/ArialRegular72",
             AnchorPoint = new Vector2(.5f, 0)

@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "MonoGame.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Data", "MonoGame.Data\MonoGame.Data.csproj", "{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Foo", "MonoGame.Foo\MonoGame.Foo.csproj", "{8B1D519B-4B3C-43B1-92A0-39F30ECF7504}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Persistence", "MonoGame.Persistence\MonoGame.Persistence.csproj", "{D6EC5763-0ADD-401C-B90A-08B053220E8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Editor", "MonoGame.Editor\MonoGame.Editor.csproj", "{315E4EAF-F7A5-4F03-B2B6-30F2A7C0C4F8}"
@@ -25,10 +23,6 @@ Global
 		{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B1D519B-4B3C-43B1-92A0-39F30ECF7504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B1D519B-4B3C-43B1-92A0-39F30ECF7504}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B1D519B-4B3C-43B1-92A0-39F30ECF7504}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B1D519B-4B3C-43B1-92A0-39F30ECF7504}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6EC5763-0ADD-401C-B90A-08B053220E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU

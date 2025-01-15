@@ -1,41 +1,40 @@
-using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using MonoGame.Data.Events;
 using MonoGame.Data.Utils.Extensions;
 
-namespace MonoGame.Data;
+namespace MonoGame.Data.Drawing;
 
-public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : Component
+public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(game) where T : DrawableComponent
 {
-    public GameSystemEventsManager EventBus { get; init; }
     public bool Paused { get; protected set; }
+    public GameSystemEventsManager EventBus { get; init; }
 
-    protected T[] Components => Game.Query<T>();
-
-    public sealed override void Initialize()
+    public override void Initialize()
     {
         OnInitialise();
         
-        foreach (var component in Components.Where(c => c.Enabled))
+        var components = Game.Query<T>();
+
+        foreach (var component in components.Where(c => c.Enabled))
         {
             Initialise(component);
             component.Initialise();
             component.Initialised = true;
         }
     }
-    
+
     public sealed override void Update(GameTime gameTime)
     {
         if (Paused) return;
-        
         OnUpdate(gameTime);
+        
+        var components = Game.Query<T>();
 
-        foreach (var component in Components.Where(c => c.Enabled))
+        foreach (var component in components.Where(c => c.Enabled))
         {
             if (!component.Initialised)
             {
-                Console.WriteLine($"Initialising {component.Name}");
                 Initialise(component);
                 component.Initialise();
                 component.Initialised = true;
@@ -47,6 +46,17 @@ public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : C
         }
     }
 
+    public sealed override void Draw(GameTime gameTime)
+    {
+        OnUpdate(gameTime);
+        var components = Game.Query<T>();
+
+        foreach (var component in components.Where(c => c.Enabled).OrderBy(c => c.Layer))
+        {
+            Draw(component, gameTime);
+        }
+    }
+
     public virtual void OnInitialise()
     {
     }
@@ -55,7 +65,7 @@ public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : C
     {
     }
 
-    public virtual void Update(T component, GameTime gameTime)
+    public virtual void OnDraw(T component, GameTime gameTime)
     {
     }
 
@@ -63,9 +73,9 @@ public abstract class GameSystem<T>(Game game) : GameComponent(game) where T : C
     {
     }
 
-    public void Notify(string eventName) => this.Publish(eventName);
-    public void Notify(string eventName, object data) => this.Publish(eventName, data);
+    public virtual void Update(T component, GameTime gameTime)
+    {
+    }
 
-    public void On(string eventName, Action<GameSystemEvent> handler) => this.Subscribe(eventName, handler);
-    public void Off(string eventName, Action<GameSystemEvent> handler) => this.Unsubscribe(eventName, handler);
+    public abstract void Draw(T component, GameTime gameTime);
 }

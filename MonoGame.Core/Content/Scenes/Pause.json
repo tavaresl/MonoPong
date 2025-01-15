@@ -1,0 +1,68 @@
+{
+  "Name": "PauseScreen",
+  "Children": [
+    {
+      "Name": "Background",
+      "Components": [
+        {
+          "$type": "MonoGame.Data.Drawing.Sprites.Shapes.RectangleTexture, MonoGame.Data",
+          "Color": { "R": 0,  "G": 0,  "B": 0,  "A": 255 },
+          "Opacity": 0.5,
+          "Size": "1280, 720",
+          "AnchorPoint": "0, 0",
+          "Layer": 1
+        },
+        {
+          "$type": "MonoGame.Core.Scripts.Components.PauseScreen, MonoGame.Core"
+        }
+      ]
+    },
+    {
+      "Name": "Title",
+      "Transform": {
+        "Position": "640, 100"
+      },
+      "Components": [
+        {
+          "$type": "MonoGame.Data.Drawing.GUI.TextLabel, MonoGame.Data",
+          "Text": "Game Over",
+          "FontName": "Fonts/ArialRegular72",
+          "AnchorPoint": "0.5, 0",
+          "Layer": 2
+        }
+      ]
+    },
+    {
+      "Name": "ResumeButton",
+      "Transform": {
+        "Position": "640, 200"
+      },
+      "Components": [
+        {
+          "$type": "MonoGame.Data.Drawing.GUI.Button, MonoGame.Data",
+          "Padding": [16, 24, 16, 24],
+          "Label": "Restart",
+          "FontName": "Fonts/ArialRegular36",
+          "AnchorPoint": "0.5, 0",
+          "Layer": 2
+        }
+      ]
+    },
+    {
+      "Name": "QuitButton",
+      "Transform": {
+        "Position": "640, 300"
+      },
+      "Components": [
+        {
+          "$type": "MonoGame.Data.Drawing.GUI.Button, MonoGame.Data",
+          "Padding": [16, 24, 16, 24],
+          "Label": "Quit",
+          "FontName": "Fonts/ArialRegular36",
+          "AnchorPoint": "0.5, 0",
+          "Layer": 2
+        }
+      ]
+    }
+  ]
+}

@@ -14,4 +14,8 @@
       <ProjectReference Include="..\MonoGame.Data\MonoGame.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Scenes\" />
+    </ItemGroup>
+
 </Project>

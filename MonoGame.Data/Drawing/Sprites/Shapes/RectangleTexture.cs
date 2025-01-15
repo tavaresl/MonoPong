@@ -1,9 +1,8 @@
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 
-namespace MonoGame.Data.Drawing.Textures.Shapes;
+namespace MonoGame.Data.Drawing.Sprites.Shapes;
 
 public sealed class RectangleTexture : DrawableTexture
 {

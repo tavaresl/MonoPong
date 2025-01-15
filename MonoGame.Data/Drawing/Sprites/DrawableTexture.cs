@@ -1,8 +1,9 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 
-namespace MonoGame.Data.Drawing.Textures;
+namespace MonoGame.Data.Drawing.Sprites;
 
 public abstract class DrawableTexture : DrawableComponent
 {
@@ -21,5 +22,9 @@ public abstract class DrawableTexture : DrawableComponent
     public sealed override Vector2 Origin => new((Texture?.Width ?? 0) * AnchorPoint.X, (Texture?.Height ?? 0) * AnchorPoint.Y);
     
     public abstract void CreateTexture();
-    public override void Dispose() => Texture?.Dispose();
+    public override void Dispose()
+    {
+        Texture?.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

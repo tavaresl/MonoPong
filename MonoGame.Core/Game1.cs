@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core.Scripts.Systems;
 using MonoGame.Data;
-using MonoGame.Data.Drawing;
+using MonoGame.Data.Collision;
+using MonoGame.Data.Drawing.GUI;
+using MonoGame.Data.Drawing.Sprites;
+using MonoGame.Data.Events;
 using MonoGame.Data.Utils.Extensions;
-using MonoGame.Persistence.Scenes;
 
 namespace MonoGame.Core;
 
@@ -26,25 +28,20 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
         
         LoadSystems();
-        ActiveScene = SceneManager.Load("Content/Scenes/Gameplay.json");
+        ActiveScene = SceneManager.Load("Content/Scenes/Main.json");
 
         if (ActiveScene == null)
         {
             Exit();
             return;
         }
-
+        
         ActiveScene.Game = this;
         ActiveScene.Start();
+        BuildComponentList();
         base.Initialize();
     }
-
-    protected override void LoadContent()
-    {
-        // TODO: use this.Content to load your game content here
-        // SceneManager.Save(ActiveScene, "Content/out.json");
-    }
-
+    
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -52,38 +49,7 @@ public class Game1 : Game
             Exit();
         
         // TODO: Add your update logic here
-        
-        var stack = new Stack<IEntity>();
-
-        stack.Push(ActiveScene);
-
-        while (stack.TryPop(out var entity))
-        {
-            if (!entity.Enabled)
-            {
-                foreach (var component in entity.Components) GameExtensions.Components.Remove(component);
-                continue;
-            }
-
-            foreach (var component in entity.Components)
-            {
-                if (!component.Enabled)
-                {
-                    GameExtensions.Components.Remove(component);
-                    continue;
-                }
-
-                if (component.Initialised) GameExtensions.Components.Add(component);
-                else
-                {
-                    component.Initialise();
-                    component.Initialised = true;
-                }
-            }
-            
-            foreach (var child in entity.Children)
-                stack.Push(child);
-        }
+        BuildComponentList();
         
         base.Update(gameTime);
     }
@@ -91,7 +57,7 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        base.Draw(gameTime);
+        base.Draw(gameTime); 
     }
 
     public void OpenScene(Scene scene)
@@ -103,12 +69,46 @@ public class Game1 : Game
 
     private void LoadSystems()
     {
-        var eventSystem = new GameSystemEventBus();
+        var eventSystem = new GameSystemEventsManager();
+        var collisionRegions = new CollisionRegions<Collider>();
+        
+        Components.Add(new CollisionRegionsSystem(this) { EventBus = eventSystem, Regions = collisionRegions});
         Components.Add(new MatchManagement(this) { EventBus = eventSystem });
         Components.Add(new BallMovement(this) { EventBus = eventSystem });
         Components.Add(new AiMovementController(this) { EventBus = eventSystem });
         Components.Add(new PlayerController(this) { EventBus = eventSystem });
         Components.Add(new PaddleCollision(this) { EventBus = eventSystem });
-        Components.Add(new DrawingSystem(this) { EventBus = eventSystem });
+        Components.Add(new PauseManagement(this) { EventBus = eventSystem });
+        Components.Add(new GuiInteractionSystem(this) { EventBus = eventSystem });
+        Components.Add(new CollisionDetector(this) { EventBus = eventSystem, Regions = collisionRegions });
+        Components.Add(new SpriteDrawingSystem(this) { EventBus = eventSystem });
+        Components.Add(new GuiDrawingSystem(this) { EventBus = eventSystem });
+    }
+
+    private void BuildComponentList()
+    {
+        var stack = new Stack<IEntity>();
+
+        stack.Push(ActiveScene);
+
+        while (stack.TryPop(out var entity))
+        {
+            if (!entity.Enabled)
+            {
+                foreach (var component in entity.Components) GameExtensions.RemoveComponent(component);
+                continue;
+            }
+
+            foreach (var component in entity.Components)
+            {
+                if (component.Enabled) GameExtensions.AddComponent(component);
+                else GameExtensions.RemoveComponent(component);
+            }
+            
+            foreach (var child in entity.Children)
+                stack.Push(child);
+        }
+
+        GameExtensions.Flatten();
     }
 }

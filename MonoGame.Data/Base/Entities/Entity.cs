@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 
@@ -11,31 +12,37 @@ namespace MonoGame.Data;
 public class Entity : IEntity  
 {
     private static int _lastUsedId = 0;
+    private bool _disposed;
     
     [JsonIgnore] public int Id { get; } = ++_lastUsedId;
     [JsonIgnore] public Game Game { get; set; }
     [JsonIgnore] public Entity Parent { get; set; } = null;
-    [JsonIgnore] public bool Enabled { get; set; } = true;
     [JsonIgnore] public bool Initialised { get; set; }
-    [JsonIgnore] public IReadOnlyCollection<Component> Components => _components.ToImmutableHashSet();
-    [JsonIgnore] public IReadOnlyCollection<Entity> Children => _children?.ToImmutableHashSet() ?? [];
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public string Name { get; set; }
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public Transform Transform { get; set; }
+    
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public virtual bool Enabled { get; set; } = true;
+    
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string Name { get; set; }
+
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public required Transform Transform { get; init;  }
     
     
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Components")]
-    private HashSet<Component> _components = [];
+    private List<Component> _components = [];
     
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Children")]
-    private HashSet<Entity> _children = [];
+    private List<Entity> _children = [];
 
-    [JsonIgnore]
-    public virtual Rectangle BoundingBox => new();
+    [JsonIgnore] public IReadOnlyCollection<Component> Components => _components.ToImmutableHashSet();
+    [JsonIgnore] public IReadOnlyCollection<Entity> Children => _children?.ToImmutableHashSet() ?? [];
 
     public Entity()
     {
         Transform = new Transform
         {
+            Entity = this,
             Position = Vector2.Zero,
             Scale = Vector2.One,
             Rotation = 0f
@@ -52,6 +59,7 @@ public class Entity : IEntity
 
     public bool RemoveComponent(Component component)
     {
+        component.Game = null;
         component.Entity = null;
         component.Dispose();
         return _components.Remove(component);
@@ -67,6 +75,20 @@ public class Entity : IEntity
     {
         var component = Components.FirstOrDefault(c => c.Name == name);
         return (T)component;
+    }
+
+    public bool TryGetComponent<T>(out T component) where T : Component
+    {
+        var found = Components.FirstOrDefault(c => c is T);
+        component = (T)found;
+        return component != null;
+    }
+
+    public bool TryGetComponent<T>(string name, out T component) where T : Component
+    {
+        var found = Components.FirstOrDefault(c => c.Name == name);
+        component = (T)found;
+        return component != null;
     }
 
     public bool HasComponent<T>() => _components.Any(c => c is T); 
@@ -88,12 +110,32 @@ public class Entity : IEntity
         return _children.Single(c => c.Id == id);
     }
 
+    public bool TryGetChild(string name, out Entity entity)
+    {
+        entity = _children.FirstOrDefault(c => c.Name == name);
+        return entity != null;
+    }
+
     public bool RemoveChild(Entity child)
     {
         if (!child.Parent.Equals(this)) return false;
         child.Game = null;
         child.Parent = null;
+        child.Dispose();
         return _children.Remove(child);
+    }
+
+    public bool ReplaceChild(Entity child, Entity newChild)
+    {
+        int idx = _children.IndexOf(child);
+        if (idx == -1) return false;
+        
+        newChild.Game = Game;
+        newChild.Parent = this;
+        _children[idx] = newChild;
+
+        child.Dispose();
+        return true;
     }
 
 
@@ -103,20 +145,16 @@ public class Entity : IEntity
         Dispose();
     }
     
-    public virtual void Dispose()
+    public void Dispose()
     {
+        if (!_disposed) return;
+
+        _disposed = true;
         Game = null;
         Parent = null;
 
-        foreach (var component in Components)
-        {
-            component.Dispose();
-        }
-
-        foreach (var child in Children)
-        {
-            child.Dispose();
-        }
+        Parallel.ForEach(_components, c => c.Dispose());
+        Parallel.ForEach(_children, c => c.Dispose());
 
         GC.SuppressFinalize(this);
     }

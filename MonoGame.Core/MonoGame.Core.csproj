@@ -25,8 +25,35 @@
         <None Update="Content\Fonts\ArialRegular72.spritefont">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
-        <None Update="Content\Scenes\Gameplay.json">
+        <None Update="Content\Scenes\Main.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Scenes\Pause.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular14.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular16.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular18.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular24.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular30.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular36.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular48.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+        <None Update="Content\Fonts\ArialRegular60.spritefont">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </None>
     </ItemGroup>
     <ItemGroup>
@@ -40,7 +67,7 @@
     <ItemGroup>
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105"/>
         <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\MonoGame.Data\MonoGame.Data.csproj" />
