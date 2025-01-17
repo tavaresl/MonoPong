@@ -23,8 +23,14 @@ public class CircleTexture : DrawableTexture
 
     
     [JsonProperty(PropertyName = "Color")]
-    private Color _color= Color.White;
-    
+    private Color _color = Color.White;
+
+    [JsonProperty(PropertyName = "BorderColor")]
+    private Color _borderColor = Color.White;
+
+    [JsonProperty(PropertyName = "BorderWidth")]
+    private int _borderWidth;
+
     [JsonIgnore]
     public Color Color
     {
@@ -32,6 +38,28 @@ public class CircleTexture : DrawableTexture
         set
         {
             _color = value;
+            CreateTexture();
+        }
+    }
+
+    [JsonIgnore]
+    public Color BorderColor
+    {
+        get => _borderColor;
+        set
+        {
+            _borderColor = value;
+            CreateTexture();
+        }
+    }
+
+    [JsonIgnore]
+    public int BorderWidth
+    {
+        get => _borderWidth;
+        set
+        {
+            _borderWidth = value;
             CreateTexture();
         }
     }
@@ -50,8 +78,9 @@ public class CircleTexture : DrawableTexture
         for (int y = 0; y < diameter; y++)
         {
             var d = Vector2.Distance(new Vector2(Radius), new Vector2(x, y));
-            if (d <= Radius) pixels.Add(Color);
-            else pixels.Add(Color.Transparent);
+            if (d > Radius) pixels.Add(Color.Transparent);
+            else if (d <= Radius - BorderWidth) pixels.Add(Color);
+            else pixels.Add(BorderColor);
         }    
         
         Texture.SetData(pixels.ToArray());

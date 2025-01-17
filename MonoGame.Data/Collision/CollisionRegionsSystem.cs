@@ -11,19 +11,33 @@ public class CollisionRegionsSystem(Game game) : GameSystem<Collider>(game)
 #if DEBUG
     public override void Initialise(Collider collider)
     {
-        if (collider is AabbCollider aabbCollider)
+        switch (collider)
         {
-            aabbCollider.Entity.AddComponent(new RectangleTexture
-            {
-                Name = "ColliderShape",
-                AnchorPoint = new Vector2(0.5f, 0.5f),
-                Size = new Vector2(aabbCollider.Width, aabbCollider.Height),
-                Color = Color.Transparent,
-                BorderColor = Color.Green,
-                BorderWidth = 1,
-                Layer = 1,
-            });
-        } 
+            case AabbCollider aabbCollider:
+                aabbCollider.Entity.AddComponent(new RectangleTexture
+                {
+                    Name = "ColliderShape",
+                    AnchorPoint = new Vector2(0.5f, 0.5f),
+                    Size = new Vector2(aabbCollider.Width, aabbCollider.Height),
+                    Color = Color.Transparent,
+                    BorderColor = Color.Green,
+                    BorderWidth = 1,
+                    Layer = 1,
+                });
+                break;
+            case CircleCollider circleCollider:
+                circleCollider.Entity.AddComponent(new CircleTexture
+                {
+                    Name = "ColliderShape",
+                    AnchorPoint = new Vector2(0.5f, 0.5f),
+                    Radius = circleCollider.Radius,
+                    Color = Color.Transparent,
+                    BorderColor = Color.Green,
+                    BorderWidth = 1,
+                    Layer = 1,
+                });
+                break;
+        }
     }
 #endif
 
