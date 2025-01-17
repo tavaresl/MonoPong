@@ -1,0 +1,412 @@
+{
+  "$id": "1",
+  "$type": "MonoGame.Core.Scene, MonoGame.Core",
+  "Components": [
+    {
+      "$id": "2",
+      "$type": "MonoGame.Game.Scripts.Components.Match, MonoGame.Game",
+      "Ball": {
+        "$id": "3",
+        "$type": "MonoGame.Core.Entity, MonoGame.Core",
+        "Components": [
+          {
+            "$id": "4",
+            "$type": "MonoGame.Core.Drawing.Sprites.Shapes.CircleTexture, MonoGame.Core",
+            "Radius": 16.0,
+            "Color": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "AnchorPoint": "0.5, 0.5",
+            "Effect": 0,
+            "Layer": 0.0,
+            "Mask": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Bounds": {
+              "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+              "X": 0,
+              "Y": 0,
+              "Width": 0,
+              "Height": 0
+            },
+            "Name": "CircleTexture",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "640, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$id": "5",
+            "$type": "MonoGame.Core.Collision.CircleCollider, MonoGame.Core",
+            "Radius": 14.0,
+            "Offset": "0, 0",
+            "Diameter": 32.0,
+            "RelativePosition": "640, 360",
+            "Name": "CircleCollider",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "640, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$id": "6",
+            "$type": "MonoGame.Game.Scripts.Components.Ball, MonoGame.Game",
+            "Speed": 512.0,
+            "Dir": "-1, 1",
+            "Acceleration": 8.0,
+            "Name": "BallController",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "640, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          }
+        ],
+        "Children": [],
+        "Name": "Entity",
+        "Transform": {
+          "$type": "MonoGame.Core.Transform, MonoGame.Core",
+          "Position": "640, 360",
+          "Scale": "1, 1",
+          "Rotation": 0.0
+        }
+      },
+      "Player": {
+        "$id": "7",
+        "$type": "MonoGame.Core.Entity, MonoGame.Core",
+        "Components": [
+          {
+            "$id": "8",
+            "$type": "MonoGame.Core.Drawing.Sprites.Shapes.RectangleTexture, MonoGame.Core",
+            "Color": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Size": "24, 96",
+            "AnchorPoint": "0.5, 0.5",
+            "Effect": 0,
+            "Layer": 0.0,
+            "Mask": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Bounds": {
+              "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+              "X": 0,
+              "Y": 0,
+              "Width": 0,
+              "Height": 0
+            },
+            "Name": "RectangleTexture",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "128, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$id": "9",
+            "$type": "MonoGame.Game.Scripts.Components.Paddle, MonoGame.Game",
+            "MovementSpeed": 300.0,
+            "Ball": {
+              "$ref": "3"
+            },
+            "Size": "24, 96",
+            "HitDirection": "1, 0",
+            "Name": "PaddleController",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "128, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$type": "MonoGame.Game.Scripts.Components.Player, MonoGame.Game"
+          },
+          {
+            "$id": "10",
+            "$type": "MonoGame.Core.Collision.AabbCollider, MonoGame.Core",
+            "X": -10,
+            "Y": -46,
+            "Width": 22,
+            "Height": 94,
+            "Name": "AabbCollider"
+          }
+        ],
+        "Children": [],
+        "Name": "Player",
+        "Transform": {
+          "$type": "MonoGame.Core.Transform, MonoGame.Core",
+          "Position": "128, 360",
+          "Scale": "1, 1",
+          "Rotation": 0.0
+        }
+      },
+      "Enemy": {
+        "$id": "11",
+        "$type": "MonoGame.Core.Entity, MonoGame.Core",
+        "Components": [
+          {
+            "$id": "12",
+            "$type": "MonoGame.Core.Drawing.Sprites.Shapes.RectangleTexture, MonoGame.Core",
+            "Color": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Size": "24, 96",
+            "AnchorPoint": "0.5, 0.5",
+            "Effect": 0,
+            "Layer": 0.0,
+            "Mask": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Bounds": {
+              "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+              "X": 0,
+              "Y": 0,
+              "Width": 0,
+              "Height": 0
+            },
+            "Name": "RectangleTexture",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "1152, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$id": "13",
+            "$type": "MonoGame.Game.Scripts.Components.Paddle, MonoGame.Game",
+            "MovementSpeed": 300.0,
+            "Ball": {
+              "$ref": "3"
+            },
+            "Size": "24, 96",
+            "HitDirection": "-1, 0",
+            "Name": "PaddleController",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "1152, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$type": "MonoGame.Game.Scripts.Components.Enemy, MonoGame.Game"
+          },
+          {
+            "$id": "14",
+            "$type": "MonoGame.Core.Collision.AabbCollider, MonoGame.Core",
+            "X": -10,
+            "Y": -46,
+            "Width": 22,
+            "Height": 94,
+            "Name": "AabbCollider",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "1152, 360",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          }
+        ],
+        "Children": [],
+        "Name": "Enemy",
+        "Transform": {
+          "$type": "MonoGame.Core.Transform, MonoGame.Core",
+          "Position": "1152, 360",
+          "Scale": "1, 1",
+          "Rotation": 0.0
+        }
+      },
+      "Score": {
+        "$id": "15",
+        "$type": "MonoGame.Core.Entity, MonoGame.Core",
+        "Components": [
+          {
+            "$id": "16",
+            "$type": "MonoGame.Core.Drawing.GUI.TextLabel, MonoGame.Core",
+            "Size": "0, 0",
+            "Text": "",
+            "FontName": "Fonts/ArialRegular72",
+            "AnchorPoint": "0.5, 0",
+            "Effect": 0,
+            "Layer": 0.0,
+            "Mask": {
+              "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+              "B": 255,
+              "G": 255,
+              "R": 255,
+              "A": 255
+            },
+            "Bounds": {
+              "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+              "X": 0,
+              "Y": 0,
+              "Width": 0,
+              "Height": 0
+            },
+            "Name": "TextLabel",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "640, 20",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          },
+          {
+            "$id": "17",
+            "$type": "MonoGame.Game.Scripts.Components.Score, MonoGame.Game",
+            "PlayerPoints": 0,
+            "EnemyPoints": 0,
+            "Text": "0 - 0",
+            "Name": "Score",
+            "Transform": {
+              "$type": "MonoGame.Core.Transform, MonoGame.Core",
+              "Position": "640, 20",
+              "Scale": "1, 1",
+              "Rotation": 0.0
+            }
+          }
+        ],
+        "Children": [],
+        "Name": "Entity",
+        "Transform": {
+          "$type": "MonoGame.Core.Transform, MonoGame.Core",
+          "Position": "640, 20",
+          "Scale": "1, 1",
+          "Rotation": 0.0
+        }
+      },
+      "Name": "Gameplay",
+      "Transform": {
+        "$type": "MonoGame.Core.Transform, MonoGame.Core",
+        "Position": "0, 0",
+        "Scale": "1, 1",
+        "Rotation": 0.0
+      }
+    }
+  ],
+  "Children": [
+    {
+      "$id": "18",
+      "$type": "MonoGame.Core.Entity, MonoGame.Core",
+      "Components": [
+        {
+          "$id": "19",
+          "$type": "MonoGame.Core.Drawing.Sprites.Shapes.DashedLineTexture, MonoGame.Core",
+          "Pattern": [
+            16,
+            16
+          ],
+          "StrokeWidth": 4,
+          "Length": 720,
+          "Color": {
+            "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+            "B": 255,
+            "G": 255,
+            "R": 255,
+            "A": 255
+          },
+          "AnchorPoint": "0.5, 0",
+          "Effect": 0,
+          "Layer": 0.0,
+          "Mask": {
+            "$type": "Microsoft.Xna.Framework.Color, MonoGame.Framework",
+            "B": 255,
+            "G": 255,
+            "R": 255,
+            "A": 255
+          },
+          "Bounds": {
+            "$type": "Microsoft.Xna.Framework.Rectangle, MonoGame.Framework",
+            "X": 0,
+            "Y": 0,
+            "Width": 0,
+            "Height": 0
+          },
+          "Name": "DashedLineTexture",
+          "Transform": {
+            "$type": "MonoGame.Core.Transform, MonoGame.Core",
+            "Position": "640, 0",
+            "Scale": "1, 1",
+            "Rotation": 0.0
+          }
+        }
+      ],
+      "Children": [],
+      "Name": "Entity",
+      "Transform": {
+        "$type": "MonoGame.Core.Transform, MonoGame.Core",
+        "Position": "640, 0",
+        "Scale": "1, 1",
+        "Rotation": 0.0
+      }
+    },
+    {
+      "$ref": "3"
+    },
+    {
+      "$ref": "7"
+    },
+    {
+      "$ref": "11"
+    },
+    {
+      "$ref": "15"
+    },
+    {
+      "$type": "MonoGame.Core.ReferenceScene, MonoGame.Core",
+      "Name": "Pause",
+      "Enabled": false,
+      "Path": "Content/Scenes/Pause.json"
+    },
+    {
+      "$type": "MonoGame.Core.ReferenceScene, MonoGame.Core",
+      "Name": "GameOver",
+      "Enabled": false,
+      "Path": "Content/Scenes/GameOver.json",
+      "Components": [
+        {
+          "$type": "MonoGame.Game.Scripts.Components.GameOver, MonoGame.Game"
+        }
+      ]
+    }
+  ],
+  "Name": "Gameplay",
+  "Transform": {
+    "$type": "MonoGame.Core.Transform, MonoGame.Core",
+    "Position": "0, 0",
+    "Scale": "1, 1",
+    "Rotation": 0.0
+  }
+}

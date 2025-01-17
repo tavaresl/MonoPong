@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "MonoGame.Core\MonoGame.Core.csproj", "{14C12700-8D7B-4C33-96EB-30873EDDE627}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Game", "MonoGame.Game\MonoGame.Game.csproj", "{14C12700-8D7B-4C33-96EB-30873EDDE627}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Data", "MonoGame.Data\MonoGame.Data.csproj", "{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Core", "MonoGame.Core\MonoGame.Core.csproj", "{03B3A83D-0DD0-4AF4-A78A-BC1EB06F36E5}"
 EndProject
 
 Global
