@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Data.Drawing.Sprites;
 
-public class SpriteDrawingSystem(Game game) : DrawingGameSystem<DrawableTexture>(game)
+public class TextureDrawingSystem(Game game) : DrawingGameSystem<DrawableTexture>(game)
 {
     private readonly SpriteBatch _spriteBatch = new(game.GraphicsDevice);
     

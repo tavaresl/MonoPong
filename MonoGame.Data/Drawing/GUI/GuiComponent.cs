@@ -10,13 +10,15 @@ public abstract class GuiComponent : DrawableComponent
 public abstract class InteractiveGuiComponent : GuiComponent
 {
     public event EventHandler<MouseState> MouseEnter;
-    public event EventHandler<MouseState> MouseLeave;
-    public event EventHandler<MouseState> Click;
+    public event EventHandler<MouseState> MouseLeft;
+    public event EventHandler<MouseState> Press;
+    public event EventHandler<MouseState> Release;
 
     public bool Hovered { get; internal set; }
-    public bool Clicked { get; internal set; }
+    public bool Pressed { get; internal set; }
     
     internal virtual void OnMouseEnter(MouseState e) => MouseEnter?.Invoke(this, e);
-    internal virtual void OnMouseLeave(MouseState e) => MouseLeave?.Invoke(this, e);
-    internal virtual void OnClick(MouseState e) => Click?.Invoke(this, e);
+    internal virtual void OnMouseLeave(MouseState e) => MouseLeft?.Invoke(this, e);
+    internal virtual void OnPress(MouseState e) => Press?.Invoke(this, e);
+    internal virtual void OnRelease(MouseState e) => Release?.Invoke(this, e);
 }

@@ -11,37 +11,37 @@ public class GuiInteractionSystem(Game game) : GameSystem<InteractiveGuiComponen
 
         if (component.Bounds.Contains(mouseState.Position))
         {
-            Mouse.SetCursor(MouseCursor.Hand);
             if (!component.Hovered)
             {
                 component.OnMouseEnter(mouseState);
                 component.Hovered = true;
             }
 
-            if (mouseState.LeftButton == ButtonState.Pressed && !component.Clicked)
+            if (mouseState.LeftButton == ButtonState.Pressed && !component.Pressed)
             {
-                component.OnClick(mouseState);
-                component.Clicked = true;
+                component.OnPress(mouseState);
+                component.Pressed = true;
             }
 
-            if (mouseState.LeftButton == ButtonState.Released && component.Clicked)
+            if (mouseState.LeftButton == ButtonState.Released && component.Pressed)
             {
-                component.Clicked = false;
+                component.OnRelease(mouseState);
+                component.Pressed = false;
             }
         }
         else
         {
             if (component.Hovered)
             {
-                Mouse.SetCursor(MouseCursor.Arrow);
                 component.OnMouseLeave(mouseState);
                 component.Hovered = false;
             }
         }
 
-        if (component.Clicked && mouseState.LeftButton == ButtonState.Released)
+        if (component.Pressed && mouseState.LeftButton == ButtonState.Released)
         {
-            component.Clicked = false;
+            component.OnRelease(mouseState);
+            component.Pressed = false;
         }
     }
 }

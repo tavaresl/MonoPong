@@ -8,15 +8,3 @@ public interface IScene : IEntity
     void Start();
     void Stop();
 }
-
-public enum InitialisationState
-{
-    NotRunning,
-    Initialising,
-    Initialised,
-    Loading,
-    Ready,
-    Starting,
-    Started,
-    Stopping,
-}

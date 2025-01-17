@@ -10,19 +10,19 @@ public class GameOver : ScriptableComponent
     {
         if (Entity.TryGetChild("RestartButton", out var restart))
             if (restart.TryGetComponent<Button>(out var restartButton))
-                restartButton.Click += HandleRestartButtonClick;
+                restartButton.Release += HandleRestartButtonRelease;
     
         if (Entity.TryGetChild("QuitButton", out var quit))
             if(quit.TryGetComponent<Button>(out var quitButton))
-                quitButton.Click += HandleQuitButtonClicked;
+                quitButton.Release += HandleQuitButtonRelease;
     }
 
-    private void HandleRestartButtonClick(object _, MouseState mouseState)
+    private void HandleRestartButtonRelease(object _, MouseState mouseState)
     {
         Entity.Enabled = false;
     }
 
-    private void HandleQuitButtonClicked(object _, MouseState mouseState)
+    private void HandleQuitButtonRelease(object _, MouseState mouseState)
     {
         Game.Exit();
     }

@@ -8,7 +8,6 @@ using MonoGame.Data.Collision;
 using MonoGame.Data.Drawing;
 using MonoGame.Data.Drawing.GUI;
 using MonoGame.Data.Drawing.Sprites;
-using MonoGame.Data.Events;
 using MonoGame.Data.Scripting;
 using MonoGame.Data.Utils.Extensions;
 
@@ -18,7 +17,8 @@ public class Game1 : Game
 {
     public Scene ActiveScene { get; private set; }
     public GraphicsSettings GraphicsSettings { get; private set; }
-    public List<KeyValuePair<float, string>> Layers = [
+
+    private readonly List<KeyValuePair<float, string>> _layers = [
         new (0f, "Main"),
         new (1f, "Overlay Scene"),
         new (2f, "Overlay Scene GUI")
@@ -66,7 +66,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.Black);
 
-        foreach (var (layer, _) in Layers.OrderBy(kvp => kvp.Key))
+        foreach (var (layer, _) in _layers.OrderBy(kvp => kvp.Key))
         {
             DrawingGameSystem.Layer = layer;
             base.Draw(gameTime);   
@@ -75,9 +75,10 @@ public class Game1 : Game
 
     public void OpenScene(Scene scene)
     {
+        scene.Game = this;
+        if (!scene.Started) scene.Start();
         ActiveScene.Stop();
         ActiveScene = scene;
-        scene.Start();
     }
 
     private void LoadSystems()
@@ -91,10 +92,10 @@ public class Game1 : Game
         Components.Add(new AiMovementController(this));
         Components.Add(new PlayerController(this));
         Components.Add(new PaddleCollision(this));
-        Components.Add(new PauseManagement(this));
+        Components.Add(new PauseScreenController(this));
         Components.Add(new GuiInteractionSystem(this));
         Components.Add(new CollisionDetector(this) { Regions = collisionRegions });
-        Components.Add(new SpriteDrawingSystem(this));
+        Components.Add(new TextureDrawingSystem(this));
         Components.Add(new GuiDrawingSystem(this));
     }
 

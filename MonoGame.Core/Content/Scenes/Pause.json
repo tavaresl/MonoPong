@@ -22,14 +22,14 @@
     {
       "Name": "Title",
       "Transform": {
-        "Position": "640, 100"
+        "Position": "640, 230"
       },
       "Components": [
         {
           "$type": "MonoGame.Data.Drawing.GUI.TextLabel, MonoGame.Data",
           "Text": "Pause",
           "FontName": "Fonts/ArialRegular72",
-          "AnchorPoint": "0.5, 0",
+          "AnchorPoint": "0.5, 1",
           "Layer": 2
         }
       ]
@@ -37,14 +37,39 @@
     {
       "Name": "ResumeButton",
       "Transform": {
-        "Position": "640, 200"
+        "Position": "640, 330"
       },
       "Components": [
         {
           "$type": "MonoGame.Data.Drawing.GUI.Button, MonoGame.Data",
-          "Padding": [16, 24, 16, 24],
           "Label": "Resume",
           "FontName": "Fonts/ArialRegular36",
+          "Styles": {
+            "0": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BackgroundColor": { "R": 0, "G": 0, "B": 0, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            },
+            "1": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BackgroundColor": { "R": 80, "G": 80, "B": 80, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            },
+            "2": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 0, "G": 0, "B": 0, "A": 255 },
+              "BackgroundColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            }
+          },
           "AnchorPoint": "0.5, 0",
           "Layer": 2
         }
@@ -53,14 +78,39 @@
     {
       "Name": "QuitButton",
       "Transform": {
-        "Position": "640, 300"
+        "Position": "640, 430"
       },
       "Components": [
         {
           "$type": "MonoGame.Data.Drawing.GUI.Button, MonoGame.Data",
-          "Padding": [16, 24, 16, 24],
           "Label": "Quit",
           "FontName": "Fonts/ArialRegular36",
+          "Styles": {
+            "0": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BackgroundColor": { "R": 0, "G": 0, "B": 0, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            },
+            "1": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BackgroundColor": { "R": 80, "G": 80, "B": 80, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            },
+            "2": {
+              "Padding": [24, 12],
+              "TextColor": { "R": 0, "G": 0, "B": 0, "A": 255 },
+              "BackgroundColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderColor": { "R": 255, "G": 255, "B": 255, "A": 255 },
+              "BorderWidth": 2,
+              "BorderRadius": 16
+            }
+          },
           "AnchorPoint": "0.5, 0",
           "Layer": 2
         }

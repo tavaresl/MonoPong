@@ -48,7 +48,7 @@
           {
             "$id": "5",
             "$type": "MonoGame.Data.Collision.CircleCollider, MonoGame.Data",
-            "Radius": 16.0,
+            "Radius": 14.0,
             "Offset": "0, 0",
             "Diameter": 32.0,
             "RelativePosition": "640, 360",
@@ -226,10 +226,10 @@
           {
             "$id": "14",
             "$type": "MonoGame.Data.Collision.AabbCollider, MonoGame.Data",
-            "X": -12,
-            "Y": -48,
-            "Width": 24,
-            "Height": 96,
+            "X": -10,
+            "Y": -46,
+            "Width": 22,
+            "Height": 94,
             "Name": "AabbCollider",
             "Transform": {
               "$type": "MonoGame.Data.Transform, MonoGame.Data",

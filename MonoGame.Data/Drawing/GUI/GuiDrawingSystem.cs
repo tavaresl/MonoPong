@@ -30,15 +30,14 @@ public class GuiDrawingSystem(Game game) : DrawingGameSystem<GuiComponent>(game)
             0f);
         
         if (button.Font == null) button.LoadFont();
-        Vector2 displacement = new(button.Padding[3], button.Padding[0]);
+        Vector2 displacement = new(button.Style.Padding[0] + button.Style.BorderWidth, button.Style.Padding[1] + button.Style.BorderWidth);
         
-        _spriteBatch.DrawString(
-            button.Font,
+        _spriteBatch.DrawString(button.Font,
             button.Label,
             button.Transform.Position + displacement,
-            button.TextColor, 
-            button.Transform.Rotation, 
-            button.Origin, 
+            button.Style.TextColor,
+            button.Transform.Rotation,
+            button.Origin,
             button.Transform.Scale,
             button.Effect,
             0f);
