@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Core.Scripts.Systems;
 using MonoGame.Data;
 using MonoGame.Data.Collision;
+using MonoGame.Data.Drawing;
 using MonoGame.Data.Drawing.GUI;
 using MonoGame.Data.Drawing.Sprites;
 using MonoGame.Data.Events;
@@ -16,6 +18,11 @@ public class Game1 : Game
 {
     public Scene ActiveScene { get; private set; }
     public GraphicsSettings GraphicsSettings { get; private set; }
+    public List<KeyValuePair<float, string>> Layers = [
+        new (0f, "Main"),
+        new (1f, "Overlay Scene"),
+        new (2f, "Overlay Scene GUI")
+    ];
 
     public Game1()
     {
@@ -58,7 +65,12 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        base.Draw(gameTime); 
+
+        foreach (var (layer, _) in Layers.OrderBy(kvp => kvp.Key))
+        {
+            DrawingGameSystem.Layer = layer;
+            base.Draw(gameTime);   
+        } 
     }
 
     public void OpenScene(Scene scene)

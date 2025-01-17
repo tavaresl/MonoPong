@@ -1,11 +1,15 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
-using MonoGame.Data.Events;
 using MonoGame.Data.Utils.Extensions;
 
 namespace MonoGame.Data.Drawing;
 
-public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(game) where T : DrawableComponent
+public abstract class DrawingGameSystem(Game game) : DrawableGameComponent(game)
+{
+    public static float Layer { get; set; }
+}
+
+public abstract class DrawingGameSystem<T>(Game game) : DrawingGameSystem(game) where T : DrawableComponent
 {
     public bool Paused { get; protected set; }
 
@@ -47,10 +51,11 @@ public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(ga
 
     public sealed override void Draw(GameTime gameTime)
     {
-        OnUpdate(gameTime);
-        var components = Game.Query<T>();
+        OnDraw(gameTime);
 
-        foreach (var component in components.Where(c => c.Enabled).OrderBy(c => c.Layer))
+        var components = Game.Query<T>();
+        
+        foreach (var component in components.Where(c => c.Enabled && c.Layer == Layer))
         {
             Draw(component, gameTime);
         }
@@ -64,7 +69,7 @@ public abstract class DrawingGameSystem<T>(Game game) : DrawableGameComponent(ga
     {
     }
 
-    public virtual void OnDraw(T component, GameTime gameTime)
+    public virtual void OnDraw(GameTime gameTime)
     {
     }
 
